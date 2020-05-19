@@ -2,6 +2,7 @@
     author:yaxinge
     time:2020-03-15 11:16:35
 ]]
+---@class BaseState
 local BaseState = class("BaseState")
 
 

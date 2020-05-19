@@ -2,6 +2,7 @@
     author:yaxinge
     time:2020-05-16 18:19:58
 ]]
+---@class BattleField
 local BattleField = class("BattleField")
 local Creature = require("GameLogics.Battle.Field.Unit.Creature")
 local CardVO = require("GameLogics.Battle.Field.Card.CardVO")

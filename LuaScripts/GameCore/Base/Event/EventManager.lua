@@ -1,12 +1,13 @@
 require("GameCore.Base.Event.Event")
-
+---@class EventManager
 local EventManager = class("EventManager")
 local Event = require("GameCore.Base.Event.Event")
 
 function EventManager:ctor(  )
     self._eventMap = {}
 end
-
+---@param eventName string
+---@param handler Handle
 function EventManager:AddListener(eventName, handler)
     if self._eventMap[eventName] == nil then
         self._eventMap[eventName] = {}
@@ -20,8 +21,11 @@ function EventManager:RemoveListener(eventName, handler)
         self._eventMap[eventName]:UnBind(handler)
     end
 end
-
+---@param eventName string
+---@param func function
+---@param obj table
 function EventManager:On(eventName, func, obj)
+    ---@type Handle
     local handler = Handle:new(func, obj)
     self:AddListener(eventName, handler)
     return handler

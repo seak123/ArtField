@@ -1,3 +1,4 @@
+---@class SessionFSM:class
 local SessionFSM = class("SessionFSM")
 
 SessionFSM.SessionType = {

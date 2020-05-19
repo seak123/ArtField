@@ -277,6 +277,7 @@ end
 @return table
 
 ]]
+
 function class(classname, super)
     local superType = type(super)
     local cls

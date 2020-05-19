@@ -1,3 +1,4 @@
+---@class Handle
 Handle = {}
 
 -- 标识handle唯一Id

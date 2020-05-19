@@ -1,3 +1,5 @@
+---@class BattleSession
+---@field field BattleField
 local BattleSession = class("BattleSession")
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 local BeginState = require("GameLogics.Battle.Session.States.Begin")
@@ -18,6 +20,7 @@ function BattleSession:Init()
     self.sceneId = self.vo.id
     self.myHeros = self.vo.myHeros
     self.map = MapMng.new(self)
+    
     self.field = BattleField.new(self)
     CS.BattleManager.Instance:StartBattle()
 
