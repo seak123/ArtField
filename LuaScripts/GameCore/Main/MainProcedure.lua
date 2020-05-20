@@ -5,8 +5,9 @@ require("GameCore.Base.Utils.List")
 _G.Debug = require("GameLogics.Utils.DebugUtil")
 Debug.Log("MainProcedure begin ...")
 
-_G.__BehaviourManager = require("GameCore.Base.Framework.BehaviourManager").new()
-_G.EventManager = require("GameCore.Base.Event.EventManager").new()
+_G.__BehaviourManager = require("GameCore.Base.Framework.BehaviourManager"):New()
+_G.EventManager = require("GameCore.Base.Event.EventManager"):New()
+_G.ConfigManager = require("GameCore.Base.Config.ConfigManager"):New()
 
 
 function Main()

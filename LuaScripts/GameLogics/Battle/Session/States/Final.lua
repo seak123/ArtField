@@ -3,8 +3,15 @@
     time:2020-05-02 23:43:08
 ]]
 local BaseState = require("GameLogics.Battle.Session.States.BaseState")
+---@class FinalState
 local FinalState = class("FinalState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
+
+---@return FinalState
+---@param sess BattleSession
+function FinalState:New(sess)
+    return self.new(sess)
+end
 
 function FinalState:ctor(sess)
     self.sess = sess

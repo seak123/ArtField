@@ -2,7 +2,15 @@
     author:yaxinge
     time:2020-05-02 23:38:55
 ]]
-local EmbattleState = class("EmbattleState")
+local BaseState = require("GameLogics.Battle.Session.States.BaseState")
+---@class EmbattleState
+local EmbattleState = class("EmbattleState",BaseState)
+
+---@return EmbattleState
+---@param sess BattleSession
+function EmbattleState:New(sess)
+    return self.new(sess)
+end
 
 function EmbattleState:ctor(sess)
     self.sess = sess

@@ -1,10 +1,16 @@
+---@class Event
 local Event = class("Event")
+
+---@return Event
+function Event:New()
+    return self.new()
+end
 
 function Event:ctor(name)
     self.name = name
     self.responsers = list:new()
 end
-
+---@param handler Handle
 function Event:Bind(handler)
     if handler == nil then
         return
@@ -18,7 +24,7 @@ function Event:Bind(handler)
     end
     self.responsers:push(handler)
 end
-
+---@param handler Handle
 function Event:UnBind(handler)
     if handler == nil then
         return

@@ -1,7 +1,11 @@
 --local LuaBehaviour = require("GameCore.Base.Framework.LuaBehaviour")
 --local CoroutineManager = require 'Async.CoroutineManager'
-
+---@class BehaviourManager
 local BehaviourManager = class("BehaviourManager")
+---@return BehaviourManager
+function BehaviourManager:New()
+	return self.new()
+end
 
 function BehaviourManager:ctor()
 	self._behaviours = {}
@@ -14,7 +18,7 @@ function BehaviourManager:CreateBehaviour(typename, go)
 	local path = typename
 	local Class = require(path)
 
-	local lb = Class.new(go)
+	local lb = Class:New(go)
  
 	self._behaviours[lb._targetID] = lb
 

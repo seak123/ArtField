@@ -14,7 +14,7 @@ end
 
 function BattleMng:StartBattle(battleVO)
     Debug.Log("[BattleManger] StartBattle ",battleVO)
-    self.session = BattleSession.new(battleVO)
+    self.session = BattleSession:New(battleVO)
     self.session:Init()
 end
 

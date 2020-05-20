@@ -5,10 +5,14 @@
 ---@class BattleField
 local BattleField = class("BattleField")
 local Creature = require("GameLogics.Battle.Field.Unit.Creature")
-local CardVO = require("GameLogics.Battle.Field.Card.CardVO")
-local CardConfig = require("GameLogics.Config.Battle.CardConfig")
 local EventConst = require("GameCore.Constant.EventConst")
 local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
+
+---@param sess BattleSession
+---@return BattleField
+function BattleField:New(sess)
+    return self.new(sess)
+end
 
 function BattleField:ctor(sess)
     self.sess = sess
@@ -26,7 +30,7 @@ function BattleField:RegisterEvent(  )
 end
 
 function BattleField:CreateUnit(unitVO)
-    local unit = Creature.new(unitVO)
+    local unit = Creature:New(unitVO)
     self.uid = self.uid + 1
     unit.uid = self.uid
 
@@ -36,7 +40,7 @@ end
 
 function BattleField:CreateHeroCards(heroIds)
     for i = 1, #heroIds do
-        local vo = CardVO.new(CardConfig.Cards[heroIds[i]])
+        local vo = ConfigManager.GetCardConfig(heroIds[i]);
         self.cuid = self.cuid + 1
         vo.uid = self.cuid
         table.insert(self.heroCards, vo)
@@ -49,7 +53,7 @@ function BattleField:ExecuteCard( cuid ,x,z)
     Debug.Warn("execute "..cardVO.Id)
     local spellCfg = CardConfig.CardSpells[cardVO.Id]
     for i=1,#spellCfg do
-        require( BaseNode.NodePath[spellCfg[i].NodeType]).new(self.sess,spellCfg[i]):Excute(x,z)
+        require( BaseNode.NodePath[spellCfg[i].NodeType]):New(self.sess,spellCfg[i]):Excute(x,z)
     end
 end
 

@@ -11,6 +11,7 @@ function NoticeMng.Notice(content)
     lb:SetNotice(content)
 end
 
+---@return UI_Notice
 function NoticeMng.FetchLb()
     local obj = CS.WindowsUtil.AddWindow("Common/UI_Notice")
     return __BehaviourManager:GetBehaviour(obj:GetInstanceID())

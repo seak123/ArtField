@@ -1,3 +1,4 @@
+---@class LuaBehaviour
 local LuaBehaviour = class("LuaBehaviour")
 local UIUtil = require("GameCore.Base.Framework.LuaBehaviourUtil")
 

@@ -1,4 +1,4 @@
----@class SessionFSM:class
+---@class SessionFSM
 local SessionFSM = class("SessionFSM")
 
 SessionFSM.SessionType = {
@@ -9,6 +9,11 @@ SessionFSM.SessionType = {
     Action = 4,
     Final = 5
 }
+
+---@return SessionFSM
+function SessionFSM:New()
+    return self.new()
+end
 
 function SessionFSM:ctor()
     self.fsm = {}

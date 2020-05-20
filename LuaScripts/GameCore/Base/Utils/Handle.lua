@@ -8,7 +8,7 @@ Handle.func = nil
 -- 引用的对象
 Handle.obj = nil
 
-function Handle:new(func, obj)
+function Handle:New(func, obj)
     local handler = {}
     setmetatable(handler, self)
     self.__index = self

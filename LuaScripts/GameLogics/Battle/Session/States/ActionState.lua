@@ -7,6 +7,12 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 local ActionState = class("ActionState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
+---@return ActionState
+---@param sess BattleSession
+function ActionState:New(sess)
+    return self.new(sess)
+end
+
 ---@param sess BattleSession
 function ActionState:ctor(sess)
     self.sess = sess
