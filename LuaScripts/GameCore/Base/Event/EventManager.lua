@@ -3,11 +3,6 @@ require("GameCore.Base.Event.Event")
 local EventManager = class("EventManager")
 local Event = require("GameCore.Base.Event.Event")
 
----@return EventManager
-function EventManager:New()
-    return self.new()
-end
-
 function EventManager:ctor(  )
     self._eventMap = {}
 end
@@ -16,7 +11,7 @@ end
 function EventManager:AddListener(eventName, handler)
     if self._eventMap[eventName] == nil then
         self._eventMap[eventName] = {}
-        self._eventMap[eventName] = Event:New(eventName)
+        self._eventMap[eventName] = Event.new(eventName)
     end
     self._eventMap[eventName]:Bind(handler)
 end
@@ -31,7 +26,7 @@ end
 ---@param obj table
 function EventManager:On(eventName, func, obj)
     ---@type Handle
-    local handler = Handle:New(func, obj)
+    local handler = Handle:new(func, obj)
     self:AddListener(eventName, handler)
     return handler
 end

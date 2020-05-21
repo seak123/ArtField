@@ -5,12 +5,6 @@
 ---@class MapManager
 local MapMng = class("MapManager")
 
----@param sess BattleSession
----@return MapManager
-function MapMng:New(sess)
-    return self.new(sess)
-end
-
 function MapMng:ctor(sess)
     self.sess = sess
     self:Init()

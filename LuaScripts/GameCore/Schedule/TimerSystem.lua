@@ -1,11 +1,6 @@
 ---@class TimerSystem
 local TimerSystem = class("TimerSystem")
 
----@return TimerSystem
-function TimerSystem:New()
-    return self.new()
-end
-
 function TimerSystem:ctor()
     self.timerMap = {}
 end

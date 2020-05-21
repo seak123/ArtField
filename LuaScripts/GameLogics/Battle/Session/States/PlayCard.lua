@@ -7,12 +7,6 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 local PlayCardState = class("PlayCardState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
----@return PlayCardState
----@param sess BattleSession
-function PlayCardState:New(sess)
-    return self.new(sess)
-end
-
 function PlayCardState:ctor(sess)
     self.sess = sess
     self.next = -1

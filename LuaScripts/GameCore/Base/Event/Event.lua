@@ -1,11 +1,6 @@
 ---@class Event
 local Event = class("Event")
 
----@return Event
-function Event:New()
-    return self.new()
-end
-
 function Event:ctor(name)
     self.name = name
     self.responsers = list:new()

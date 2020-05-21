@@ -8,12 +8,6 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 local BeginState = class("BeginState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
----@return BeginState
----@param sess BattleSession
-function BeginState:New(sess)
-    return self.new(sess)
-end
-
 ---@param sess BattleSession
 function BeginState:ctor(sess)
     self.sess = sess

@@ -10,11 +10,6 @@ SessionFSM.SessionType = {
     Final = 5
 }
 
----@return SessionFSM
-function SessionFSM:New()
-    return self.new()
-end
-
 function SessionFSM:ctor()
     self.fsm = {}
     self.currState = nil

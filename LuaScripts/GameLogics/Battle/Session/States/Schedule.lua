@@ -7,12 +7,6 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 local ScheduleState = class("ScheduleState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
----@return ScheduleState
----@param sess BattleSession
-function ScheduleState:New(sess)
-    return self.new(sess)
-end
-
 function ScheduleState:ctor(sess)
     self.sess = sess
     self.next = -1

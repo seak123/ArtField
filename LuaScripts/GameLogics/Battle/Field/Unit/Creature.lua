@@ -5,10 +5,6 @@
 ---@class Createure
 local Creature = class("Createure")
 
-function Createure:New()
-    self.new()
-end
-
 function Creature:ctor(  )
     
 end

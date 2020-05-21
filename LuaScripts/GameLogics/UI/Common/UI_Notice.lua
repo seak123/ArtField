@@ -26,10 +26,6 @@ local setting = {
         }
     }
 }
----@return UI_Notice
-function UI_Notice:New()
-    return self.new()
-end
 
 function UI_Notice:ctor(obj)
     self.super.ctor(self, obj, setting)

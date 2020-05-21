@@ -6,12 +6,6 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class EmbattleState
 local EmbattleState = class("EmbattleState",BaseState)
 
----@return EmbattleState
----@param sess BattleSession
-function EmbattleState:New(sess)
-    return self.new(sess)
-end
-
 function EmbattleState:ctor(sess)
     self.sess = sess
     self.next = -1

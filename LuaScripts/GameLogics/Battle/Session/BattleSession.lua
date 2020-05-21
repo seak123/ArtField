@@ -13,15 +13,9 @@ local BattleField = require("GameLogics.Battle.Field.BattleField")
 local EventConst = require("GameCore.Constant.EventConst")
 
 ---@class BattleSessionVO
-local BattleSession = {
+local BattleSessionVO = {
 
 }
-
----@param vo BattleSessionVO
----@return BattleSession
-function BattleSession:New(vo)
-    return self.new(vo)
-end
 
 function BattleSession:ctor(vo)
     self.vo = vo
@@ -30,14 +24,14 @@ end
 function BattleSession:Init()
     self.sceneId = self.vo.id
     self.myHeros = self.vo.myHeros
-    self.map = MapMng:New(self)
+    self.map = MapMng.new(self)
     
-    self.field = BattleField:New(self)
+    self.field = BattleField.new(self)
     CS.BattleManager.Instance:StartBattle()
 
     self.field:CreateHeroCards(self.myHeros)
 
-    self.fsm = FSM:New()
+    self.fsm = FSM.new()
     self.fsm:RegisterState(FSM.SessionType.Begin, BeginState.new(self))
     self.fsm:RegisterState(FSM.SessionType.EmbattleHero, EmbattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Schedule, ScheduleState.new(self))

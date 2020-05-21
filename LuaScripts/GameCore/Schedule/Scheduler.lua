@@ -3,7 +3,7 @@ local EventConst = require("GameCore.Constant.EventConst")
 local TimerSystem = require("GameCore.Schedule.TimerSystem")
 
 function Scheduler.Init(  )
-    Scheduler.timerSystem = TimerSystem:New()
+    Scheduler.timerSystem = TimerSystem.new()
 end
 
 function Scheduler.Update( delta )

@@ -2,11 +2,6 @@
 local ConfigManager = class("ConfigManager")
 local CardConfig = require("GameLogics.Config.Battle.CardConfig")
 
----@return ConfigManager
-function ConfigManager:New()
-    return self.new()
-end
-
 function ConfigManager:ctor()
 end
 ---@param cardId number 卡牌id
@@ -21,6 +16,10 @@ function ConfigManager:GetCardConfig(cardId)
     cardVO.CardType = cfg.CardType
 
     return cardVO
+end
+
+function ConfigManager:GetSpellConfig(spellId)
+    return CardConfig.CardSpells[spellId]
 end
 
 return ConfigManager

@@ -2,10 +2,6 @@
 --local CoroutineManager = require 'Async.CoroutineManager'
 ---@class BehaviourManager
 local BehaviourManager = class("BehaviourManager")
----@return BehaviourManager
-function BehaviourManager:New()
-	return self.new()
-end
 
 function BehaviourManager:ctor()
 	self._behaviours = {}
@@ -18,7 +14,7 @@ function BehaviourManager:CreateBehaviour(typename, go)
 	local path = typename
 	local Class = require(path)
 
-	local lb = Class:New(go)
+	local lb = Class.new(go)
  
 	self._behaviours[lb._targetID] = lb
 
