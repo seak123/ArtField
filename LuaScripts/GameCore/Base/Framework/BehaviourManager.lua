@@ -59,6 +59,8 @@ function BehaviourManager:BindEvents(lb)
 	lb:CheckAndBindLaterEvents()
 end
 
+---@param id number GameObject的InstanceId
+---@return LuaBehaviour
 function BehaviourManager:GetBehaviour(id)
 	return self._behaviours[id]
 end

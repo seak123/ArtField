@@ -4,21 +4,18 @@
 ]]
 local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class EmbattleState
-local EmbattleState = class("EmbattleState",BaseState)
+local EmbattleState = class("EmbattleState", BaseState)
+local CardExcutor = require("GameLogics.Battle.Field.Card.CardExcutor")
 
 function EmbattleState:ctor(sess)
+    ---@type BattleSession
     self.sess = sess
     self.next = -1
 end
 
 function EmbattleState:Enter()
     --初始化布阵面板
-    local obj = CS.WindowsUtil.AddWindow("Battle/Embattle/UI_EmbattlePanel", CS.UILayer.MainLayer_0)
-    local instanceId = obj:GetInstanceID()
-    local lb = __BehaviourManager:GetBehaviour(instanceId)
-    if lb ~= nil then
-        lb:SetData(self.sess.field.heroCards)
-    end
+    self.sess.field.cardExcutor:SwitchState(CardExcutor.State.Hero)
 end
 
 function EmbattleState:Update()

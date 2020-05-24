@@ -13,6 +13,7 @@ end
 function MapMng:Init(  )
     Debug.Log("[MapManager]create map grid")
     -- create map grid mesh
+    local i = CS.MapManager.Instance
     CS.MapManager.Instance:LoadMap(6,8);
 end
 

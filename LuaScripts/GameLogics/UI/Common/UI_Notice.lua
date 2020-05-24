@@ -29,7 +29,7 @@ local setting = {
 
 function UI_Notice:ctor(obj)
     self.super.ctor(self, obj, setting)
-    CS.WindowsUtil.SwitchLayer(obj, UIConst.UILayer.NoticeLayer)
+    CS.WindowsUtil.SwitchLayer(obj, UIConst.Layer.MainLayer0)
 end
 
 function UI_Notice:OnAwake()

@@ -3,7 +3,7 @@ require("GameCore.Base.Event.Event")
 local EventManager = class("EventManager")
 local Event = require("GameCore.Base.Event.Event")
 
-function EventManager:ctor(  )
+function EventManager:ctor()
     self._eventMap = {}
 end
 ---@param eventName string
@@ -29,6 +29,19 @@ function EventManager:On(eventName, func, obj)
     local handler = Handle:new(func, obj)
     self:AddListener(eventName, handler)
     return handler
+end
+
+function EventManager:RegisterCS(eventName, func)
+    local hfunc = function(table)
+        func(table)
+    end
+    local handler = Handle:new(hfunc)
+    self:AddListener(eventName, handler)
+    return handler
+end
+
+function EventManager:UnRegisterCS(eventName, handler)
+    self:RemoveListener(eventName, handler)
 end
 
 function EventManager:Off(eventName, handler)

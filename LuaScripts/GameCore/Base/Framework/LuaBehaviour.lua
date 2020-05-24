@@ -172,7 +172,7 @@ function LuaBehaviour:CheckAndBindLaterEvents()
     lo:DestroyEvent(
         "+",
         function()
-            __BehaviourManager:DestroyBehaviour(self)
+            BehaviourManager:DestroyBehaviour(self)
         end
     )
 end

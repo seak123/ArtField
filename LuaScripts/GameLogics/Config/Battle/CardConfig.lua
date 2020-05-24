@@ -15,12 +15,19 @@ this.Cards = {
 this.CardSpells = {
     [1] = {
         {NodeType = BaseNode.NodeType.Summon, UnitId = 1}
+    },
+    [99] = {
+        {
+            NodeType = BaseNode.NodeType.Summon,
+            UnitId = 1,
+            childs = {{NodeType = BaseNode.NodeType.Summon}, {NodeType = BaseNode.NodeType.Summon}}
+        }
     }
 }
 
 this.UnitPrefab = {
     --D:\Artifield\Assets\Resources\Battle\Character\Modles\SwordShield\Prefab
-    [1] = "Battle/Character/Modles/SwordShield/Prefab/SwordShield",
+    [1] = "Battle/Character/Modles/SwordShield/Prefab/SwordShield"
 }
 
 return this

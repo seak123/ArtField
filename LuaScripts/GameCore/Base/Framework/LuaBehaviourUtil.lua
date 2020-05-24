@@ -38,7 +38,7 @@ function LuaBehaviourUtil.BindElement(lb, lb_go, element, field_name, is_array, 
     elseif element.Script then
         obj = element_go:AddComponent(typeof(CS.LuaOperation))
         obj:ResetClassPath(element.Script)
-        obj = __BehaviourManager:GetBehaviour(obj.gameObject:GetInstanceID())
+        obj = BehaviourManager:GetBehaviour(obj.gameObject:GetInstanceID())
     else
         obj = element_go
     end

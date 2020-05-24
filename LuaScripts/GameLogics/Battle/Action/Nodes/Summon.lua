@@ -29,12 +29,13 @@ end
 
 function Summon:Perform(  )
     local vo = {}
-    vo.NodeType = self.vo.NodeType
-    vo.prefabPath = CardConfig.UnitPrefab[self.vo.UnitId]
-    vo.positionX = self.vo.x
-    vo.positionZ = self.vo.z
-    Debug.Warn("pushNode")
-    CS.Performer.Instance:PushNode(vo)
+    vo.nodeType = self.vo.NodeType
+    vo.nodeVO = {}
+    vo.nodeVO.prefabPath = CardConfig.UnitPrefab[self.vo.UnitId]
+    vo.nodeVO.positionX = self.vo.x
+    vo.nodeVO.positionZ = self.vo.z
+    
+    EventManager:Emit("PerfomerPushNode",vo)
 end
 
 return Summon
