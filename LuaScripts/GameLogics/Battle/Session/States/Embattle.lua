@@ -5,7 +5,10 @@
 local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class EmbattleState
 local EmbattleState = class("EmbattleState", BaseState)
-local CardExcutor = require("GameLogics.Battle.Field.Card.CardExcutor")
+local CardExecutor = require("GameLogics.Battle.Field.Card.CardExecutor")
+local FSM = require("GameLogics.Battle.Session.SessionFSM")
+
+EmbattleState.type = FSM.SessionType.EmbattleHero
 
 function EmbattleState:ctor(sess)
     ---@type BattleSession
@@ -15,7 +18,7 @@ end
 
 function EmbattleState:Enter()
     --初始化布阵面板
-    self.sess.field.cardExcutor:SwitchState(CardExcutor.State.Hero)
+    self.sess.field.cardExcutor:SwitchState(CardExecutor.State.Hero)
 end
 
 function EmbattleState:Update()

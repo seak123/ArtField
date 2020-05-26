@@ -10,10 +10,10 @@ function ConfigManager:GetCardConfig(cardId)
     ---@type CardVO
     local cardVO = {}
     local cfg = CardConfig.Cards[cardId]
-    cardVO.Id = cfg.ID
-    cardVO.CardName = cfg.CardName
-    cardVO.CardExcuteType = cfg.CardExcuteType
-    cardVO.CardType = cfg.CardType
+    cardVO.id = cfg.id
+    cardVO.cardName = cfg.cardName
+    cardVO.cardExcuteType = cfg.cardExcuteType
+    cardVO.cardType = cfg.cardType
 
     return cardVO
 end

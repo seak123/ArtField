@@ -10,7 +10,7 @@ BaseNode.NodeType = {
 }
 
 BaseNode.NodePath = {
-    [1] = "GameLogics.Battle.Action.Nodes.Summon",
+    [BaseNode.NodeType.Summon] = "GameLogics.Battle.Action.Nodes.Summon",
 }
 
 function BaseNode:ctor(  )

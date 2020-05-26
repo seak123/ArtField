@@ -30,7 +30,7 @@ end
 
 function EmbattleItem:SetData(data)
     self.data = data
-    self.Name.text = self.data.CardName
+    self.Name.text = self.data.cardName
 
     local cardScript = self._target:GetComponent(typeof(CS.CardItem))
     cardScript:InjectData(self.data)

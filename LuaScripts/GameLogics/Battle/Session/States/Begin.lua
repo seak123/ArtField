@@ -8,6 +8,8 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 local BeginState = class("BeginState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
+BeginState.type = FSM.SessionType.Begin
+
 ---@param sess BattleSession
 function BeginState:ctor(sess)
     self.sess = sess
@@ -15,8 +17,7 @@ function BeginState:ctor(sess)
 end
 
 function BeginState:Enter()
-    --初始化镜头
-    CS.CameraManager.Instance:InitSceneCamera(BattleManager.session.sceneId)
+   
     self.next = FSM.SessionType.EmbattleHero
 end
 

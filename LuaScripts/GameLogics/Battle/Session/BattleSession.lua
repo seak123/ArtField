@@ -2,6 +2,7 @@
 ---@field field BattleField
 local BattleSession = class("BattleSession")
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
+local PreBattleState = require("GameLogics.Battle.Session.States.PreBattle")
 local BeginState = require("GameLogics.Battle.Session.States.Begin")
 local EmbattleState = require("GameLogics.Battle.Session.States.Embattle")
 local ScheduleState = require("GameLogics.Battle.Session.States.Schedule")
@@ -30,8 +31,10 @@ function BattleSession:Init()
     CS.BattleManager.Instance:StartBattle()
 
     self.field:CreateHeroCards(self.myHeros)
+    self.state = nil
 
-    self.fsm = FSM.new()
+    self.fsm = FSM.new(self)
+    self.fsm:RegisterState(FSM.SessionType.PreBattle,PreBattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Begin, BeginState.new(self))
     self.fsm:RegisterState(FSM.SessionType.EmbattleHero, EmbattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Schedule, ScheduleState.new(self))
@@ -39,7 +42,7 @@ function BattleSession:Init()
     self.fsm:RegisterState(FSM.SessionType.Action, ActionState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Final, FinalState.new(self))
 
-    self.fsm:Switch2State(FSM.SessionType.Begin)
+    self.fsm:Switch2State(FSM.SessionType.PreBattle)
 
     EventManager:On(EventConst.ON_SCHEDULER_UPDATE, self.Update, self)
 end
