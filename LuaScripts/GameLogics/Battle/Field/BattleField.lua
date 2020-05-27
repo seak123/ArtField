@@ -33,7 +33,7 @@ end
 
 function BattleField:Register()
     EventManager:On("ExcuteCard", self.PlayCard, self)
-    EventManager:On(EventConst.ON_ENTER_BEGIN_STATE,self.OnEnterBeginState,self)
+    EventManager:On(EventConst.ON_ENTER_BEGIN_STATE, self.OnEnterBeginState, self)
 end
 
 ------------------------------------- event functions ------------------------------
@@ -42,17 +42,17 @@ function BattleField:OnEnterBeginState()
     for i = 1, #self.heroGrave do
         self.heroGrave[i].resetRound = self.heroGrave[i].resetRound - 1
         if self.heroGrave[i].resetRound == 0 then
-        local vo = ConfigManager:GetCardConfig(self.heroGrave[i].id)
-        self.cuid = self.cuid + 1
-        vo.uid = self.cuid
-        table.insert(self.heroCards, vo)
+            local vo = ConfigManager:GetCardConfig(self.heroGrave[i].id)
+            self.cuid = self.cuid + 1
+            vo.uid = self.cuid
+            table.insert(self.heroCards, vo)
         end
     end
 end
 
 ------------------------------------- unit functions ------------------------------
 function BattleField:CreateUnit(unitVO)
-    local unit = Creature.new(unitVO)
+    local unit = Creature.new(self.sess,unitVO)
     self.uid = self.uid + 1
     unit.uid = self.uid
 
@@ -74,6 +74,15 @@ function BattleField:FindHandCards(cuid)
     return nil
 end
 
+function BattleField:RemoveHandCard(cuid)
+    for i = 1, #self.heroCards do
+        if self.handCards[i].uid == cuid then
+            table.remove(self.handCards, i)
+        end
+    end
+    EventManager.Emit(EventConst.ON_CARD_CHANGE)
+end
+
 function BattleField:FindHeroCards(cuid)
     for i = 1, #self.heroCards do
         if self.heroCards[i].uid == cuid then
@@ -81,6 +90,15 @@ function BattleField:FindHeroCards(cuid)
         end
     end
     return nil
+end
+
+function BattleField:RemoveHeroCard(cuid)
+    for i = 1, #self.heroCards do
+        if self.heroCards[i].uid == cuid then
+            table.remove(self.heroCards, i)
+        end
+    end
+    EventManager:Emit(EventConst.ON_CARD_CHANGE)
 end
 
 ------------------------------------- game logic ------------------------------
@@ -101,7 +119,12 @@ function BattleField:PlayCard(cuid, param)
     end
 
     if self.cardExcutor:ExecuteCard(cardVO, param) then
-    -- play card completed
+        -- play card completed
+        if self.sess.state == FSM.SessionType.EmbattleHero then
+            self:RemoveHeroCard(cuid)
+        else
+            self:RemoveHandCard(cuid)
+        end
     end
 end
 

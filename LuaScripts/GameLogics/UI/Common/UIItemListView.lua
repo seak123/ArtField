@@ -29,6 +29,7 @@ function UIItemListView:ctor(obj)
     self.super.ctor(self, obj, setting)
     self.vertical = false
     self.getFunc = nil
+    self.items = {}
 
     self.itemPrefabPath = ""
 
@@ -62,6 +63,7 @@ function UIItemListView:OnStart()
 end
 
 function UIItemListView:RefreshView()
+    self:ClearItems()
     if self.vertical then
         --TODO
     else
@@ -72,12 +74,22 @@ function UIItemListView:RefreshView()
             obj.transform:SetParent(self.Content.transform)
             obj.transform.localPosition =
                 CS.LuaCallCSharpUtil.CreateVector3((index - 0.5) * self.itemSize, -self.itemSize / 2, 0)
+            table.insert(self.items, obj)
             local lb = BehaviourManager:GetBehaviour(obj:GetInstanceID())
             lb:SetData(self.getFunc(index))
 
             index = index + 1
         end
     end
+end
+
+function UIItemListView:ClearItems()
+    for i = 1, #self.items do
+        if self.items[i] ~= nil then
+            CS.WindowsUtil.RemoveWindow(self.items[i])
+        end
+    end
+    self.items = {}
 end
 
 return UIItemListView

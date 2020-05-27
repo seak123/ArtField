@@ -22,4 +22,8 @@ function ConfigManager:GetSpellConfig(spellId)
     return CardConfig.CardSpells[spellId]
 end
 
+function ConfigManager:GetUnitConfig(unitId)
+    return CardConfig.UnitPrefab[unitId]
+end
+
 return ConfigManager

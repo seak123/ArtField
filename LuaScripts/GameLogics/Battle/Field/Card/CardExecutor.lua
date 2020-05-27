@@ -2,6 +2,7 @@
 local CardExecutor = class("CardExecutor")
 local ConfigManager = require("GameCore.Base.Config.ConfigManager")
 local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
+local EventConst = require("GameCore.Constant.EventConst")
 local UIConst = require("GameLogics.Constant.UIConst")
 
 CardExecutor.State = {
@@ -24,11 +25,12 @@ function CardExecutor:Init()
 end
 
 function CardExecutor:Register()
+    EventManager:On(EventConst.ON_CARD_CHANGE,self.RefreshView,self)
 end
 
 function CardExecutor:UnRegister()
 end
-
+--------------------------------  card view -----------------------
 function CardExecutor:SwitchState(state)
     if state == CardExecutor.State.Hero then
         self.cardPanelLb:SetData(self.sess.field.heroCards)
@@ -37,6 +39,10 @@ function CardExecutor:SwitchState(state)
     end
 end
 
+function CardExecutor:RefreshView()
+    self.cardPanelLb:RefreshScroll()
+end
+-------------------------------   card logic ------------------------------
 local function ExecuteNode(sess,spellCfg, rootVO, param)
     local vo = require(BaseNode.NodePath[spellCfg.nodeType]).new(sess, spellCfg):Excute(param)
     if rootVO == nil then

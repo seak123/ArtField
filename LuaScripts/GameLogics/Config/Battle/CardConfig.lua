@@ -25,9 +25,14 @@ this.CardSpells = {
     }
 }
 
+
 this.UnitPrefab = {
     --D:\Artifield\Assets\Resources\Battle\Character\Modles\SwordShield\Prefab
     [1] = "Battle/Character/Modles/SwordShield/Prefab/SwordShield"
+}
+
+this.UnitConfig = {
+    [1] = {}
 }
 
 return this

@@ -19,9 +19,20 @@ end
 function EmbattleState:Enter()
     --初始化布阵面板
     self.sess.field.cardExcutor:SwitchState(CardExecutor.State.Hero)
+    self.sess.field.cardExcutor.cardPanelLb:SetBtnText("确认")
+
+    local func = function()
+        self.next = FSM.SessionType.Schedule
+    end
+
+    self.sess.field.cardExcutor.cardPanelLb:SetBtnCallback(func)
 end
 
 function EmbattleState:Update()
+end
+
+function EmbattleState:Leave()
+    self.sess.field.cardExcutor.cardPanelLb:SetBtnCallback(nil)
 end
 
 return EmbattleState

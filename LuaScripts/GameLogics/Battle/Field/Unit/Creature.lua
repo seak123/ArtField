@@ -5,7 +5,7 @@
 ---@class Createure
 local Creature = class("Createure")
 
-function Creature:ctor(  )
+function Creature:ctor(sess,unitVO)
     
 end
 

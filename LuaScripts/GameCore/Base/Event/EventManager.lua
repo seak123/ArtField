@@ -49,6 +49,9 @@ function EventManager:Off(eventName, handler)
 end
 
 function EventManager:Emit(eventName, ...)
+    if eventName == nil then
+        return Debug.Error("[EventManager] try to emit event, but eventName is nil")
+    end
     if self._eventMap[eventName] then
         self._eventMap[eventName]:Fire(...)
     end

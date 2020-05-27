@@ -13,7 +13,7 @@ function ScheduleState:ctor(sess)
 end
 
 function ScheduleState:Enter()
-    --self.next = FSM.SessionType.Embattle
+    self.next = FSM.SessionType.PlayCard
 end
 
 function ScheduleState:Update()
