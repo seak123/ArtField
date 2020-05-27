@@ -30,7 +30,7 @@ function BattleSession:Init()
     self.field = BattleField.new(self)
     CS.BattleManager.Instance:StartBattle()
 
-    self.field:CreateHeroCards(self.myHeros)
+    self.field:InjectData(self.myHeros)
     self.state = nil
 
     self.fsm = FSM.new(self)

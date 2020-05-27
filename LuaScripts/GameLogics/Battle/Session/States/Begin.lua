@@ -2,11 +2,11 @@
     author:yaxinge
     time:2020-03-15 11:13:07
 ]]
-
 local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class BeginState:BaseState
-local BeginState = class("BeginState",BaseState)
+local BeginState = class("BeginState", BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
+local EventConst = require("GameCore.Constant.EventConst")
 
 BeginState.type = FSM.SessionType.Begin
 
@@ -17,7 +17,7 @@ function BeginState:ctor(sess)
 end
 
 function BeginState:Enter()
-   
+    EventManager:Emit(EventConst.ON_ENTER_BEGIN_STATE)
     self.next = FSM.SessionType.EmbattleHero
 end
 

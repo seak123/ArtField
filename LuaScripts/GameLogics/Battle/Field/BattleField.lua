@@ -25,6 +25,7 @@ function BattleField:Init()
     self.cards = {}
     self.handCards = {}
     self.heroCards = {}
+    self.heroGrave = {}
     self.cardExcutor = CardExecutor.new(self.sess)
 
     self:Register()
@@ -32,7 +33,21 @@ end
 
 function BattleField:Register()
     EventManager:On("ExcuteCard", self.PlayCard, self)
-    EventManager:On(EventConst.ON_ENTER_BEGIN_STATE)
+    EventManager:On(EventConst.ON_ENTER_BEGIN_STATE,self.OnEnterBeginState,self)
+end
+
+------------------------------------- event functions ------------------------------
+function BattleField:OnEnterBeginState()
+    self.heroCards = {}
+    for i = 1, #self.heroGrave do
+        self.heroGrave[i].resetRound = self.heroGrave[i].resetRound - 1
+        if self.heroGrave[i].resetRound == 0 then
+        local vo = ConfigManager:GetCardConfig(self.heroGrave[i].id)
+        self.cuid = self.cuid + 1
+        vo.uid = self.cuid
+        table.insert(self.heroCards, vo)
+        end
+    end
 end
 
 ------------------------------------- unit functions ------------------------------
@@ -46,16 +61,6 @@ function BattleField:CreateUnit(unitVO)
 end
 
 ------------------------------------- card functions ------------------------------
-
-function BattleField:CreateHeroCards(heroIds)
-    for i = 1, #heroIds do
-        local vo = ConfigManager:GetCardConfig(heroIds[i])
-        self.cuid = self.cuid + 1
-        vo.uid = self.cuid
-        table.insert(self.heroCards, vo)
-        self.cards[self.cuid] = vo
-    end
-end
 
 function BattleField:RemoveHandCard(cuid)
 end
@@ -79,6 +84,12 @@ function BattleField:FindHeroCards(cuid)
 end
 
 ------------------------------------- game logic ------------------------------
+
+function BattleField:InjectData(heroIds)
+    for i = 1, #heroIds do
+        table.insert(self.heroGrave, {resetRound = i, id = heroIds[i]})
+    end
+end
 
 -- 打出开牌 cuid
 function BattleField:PlayCard(cuid, param)
