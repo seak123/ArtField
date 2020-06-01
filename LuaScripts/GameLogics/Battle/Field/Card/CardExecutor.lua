@@ -1,6 +1,5 @@
 ---@class CardExecutor
 local CardExecutor = class("CardExecutor")
-local ConfigManager = require("GameCore.Base.Config.ConfigManager")
 local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
 local EventConst = require("GameCore.Constant.EventConst")
 local UIConst = require("GameLogics.Constant.UIConst")

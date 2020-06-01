@@ -23,7 +23,7 @@ function ConfigManager:GetSpellConfig(spellId)
 end
 
 function ConfigManager:GetUnitConfig(unitId)
-    return CardConfig.UnitPrefab[unitId]
+    return CardConfig.UnitConfig[unitId]
 end
 
 return ConfigManager

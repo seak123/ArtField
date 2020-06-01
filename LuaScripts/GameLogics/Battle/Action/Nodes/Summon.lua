@@ -6,7 +6,6 @@ local base = require("GameLogics.Battle.Action.Nodes.BaseNode")
 ---@class SummonNode
 local Summon = class("SummonNode", base)
 local CardConfig = require("GameLogics.Config.Battle.CardConfig")
-local ConfigManager = require("GameCore.Base.Config.ConfigManager")
 
 Summon.SummonType = {
     Hero = 1, --召唤英雄
@@ -34,21 +33,23 @@ function Summon:ctor(sess, vo)
 end
 
 function Summon:Excute(param)
-    local vo = ConfigManager.GetUnitConfig(self.vo.unitId)
+    ---@type UnitVO
+    local vo = ConfigManager:GetUnitConfig(self.vo.unitId)
     local uid = self.sess.field:CreateUnit(vo)
     self.vo.uid = uid
     self.vo.x = param.selectPos.x
     self.vo.z = param.selectPos.y
-    return self:Perform()
+    return self:Perform(vo)
 end
 
-function Summon:Perform()
+---@param unitVO UnitVO
+function Summon:Perform(unitVO)
     local vo = {}
     vo.nodeType = self.vo.nodeType
     ---@type SummonPerformVO
     vo.nodeVO = {}
     vo.nodeVO.uid = self.vo.uid
-    vo.nodeVO.prefabPath = CardConfig.UnitPrefab[self.vo.unitId]
+    vo.nodeVO.unitVO = unitVO
     vo.nodeVO.positionX = self.vo.x
     vo.nodeVO.positionZ = self.vo.z
     return vo
