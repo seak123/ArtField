@@ -25,7 +25,10 @@ end
 function BattleSession:Init()
     self.sceneId = self.vo.id
     self.myHeros = self.vo.myHeros
-    self.map = MapMng.new(self)
+    self.map = MapMng.new(self,{
+        width = 8,
+        height = 8,
+    })
     
     self.field = BattleField.new(self)
     CS.BattleManager.Instance:StartBattle()
@@ -36,9 +39,7 @@ function BattleSession:Init()
     self.fsm = FSM.new(self)
     self.fsm:RegisterState(FSM.SessionType.PreBattle,PreBattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Begin, BeginState.new(self))
-    self.fsm:RegisterState(FSM.SessionType.EmbattleHero, EmbattleState.new(self))
-    self.fsm:RegisterState(FSM.SessionType.Schedule, ScheduleState.new(self))
-    self.fsm:RegisterState(FSM.SessionType.PlayCard, PlayCardState.new(self))
+    self.fsm:RegisterState(FSM.SessionType.Embattle, EmbattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Action, ActionState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Final, FinalState.new(self))
 

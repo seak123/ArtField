@@ -49,7 +49,7 @@ function EmbattlePanel:RefreshScroll()
 end
 
 function EmbattlePanel:OnConfirm()
-    --EventManager:Emit("ExcuteCard", 1,1)
+    
 end
 
 return EmbattlePanel

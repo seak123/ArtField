@@ -1,7 +1,7 @@
 local EventConst = {}
 
 -- BattleState
-EventConst.ON_ENTER_BEGIN_STATE = "ON_ENTER_BEGIN_STATE" --进入回合开始状态
+EventConst.ON_BEGIN_BATTLE = "ON_BEGIN_BATTLE" --游戏开始
 
 -- Card
 EventConst.ON_CARD_CHANGE = "ON_CARD_CHANGE"

@@ -34,7 +34,6 @@ function CardExecutor:SwitchState(state)
     if state == CardExecutor.State.Hero then
         self.cardPanelLb:SetData(self.sess.field.heroCards)
     elseif state == CardExecutor.State.Normal then
-    elseif state == CardExecutor.State.Equipment then
     end
 end
 
@@ -42,37 +41,35 @@ function CardExecutor:RefreshView()
     self.cardPanelLb:RefreshScroll()
 end
 -------------------------------   card logic ------------------------------
-local function ExecuteNode(sess,spellCfg, rootVO, param)
-    local vo = require(BaseNode.NodePath[spellCfg.nodeType]).new(sess, spellCfg):Excute(param)
-    if rootVO == nil then
-        rootVO = vo
-    else
-        rootVO.childCount = rootVO.childCount + 1
-        table.insert(rootVO.childs, vo)
-    end
+-- local function ExecuteNode(sess,spellCfg, rootVO, param)
+--     local vo = require(BaseNode.NodePath[spellCfg.nodeType]).new(sess, spellCfg):Excute(param)
+--     if rootVO == nil then
+--         rootVO = vo
+--     else
+--         rootVO.childCount = rootVO.childCount + 1
+--         table.insert(rootVO.childs, vo)
+--     end
 
-    if rootVO.childs == nil then
-        rootVO.childs = {}
-        rootVO.childCount = 0
-    end
+--     if rootVO.childs == nil then
+--         rootVO.childs = {}
+--         rootVO.childCount = 0
+--     end
 
-    if spellCfg.childs ~= nil and #spellCfg.childs > 0 then
-        for i = 1, #spellCfg.childs do
-            ExecuteNode(spellCfg.childs[i], vo, param)
-        end
-    end
+--     if spellCfg.childs ~= nil and #spellCfg.childs > 0 then
+--         for i = 1, #spellCfg.childs do
+--             ExecuteNode(spellCfg.childs[i], vo, param)
+--         end
+--     end
 
-    return rootVO
-end
+--     return rootVO
+-- end
 
 function CardExecutor:ExecuteCard(cardVO, param)
-    Debug.Warn("execute " .. cardVO.id)
-
     local spellCfg = ConfigManager:GetSpellConfig(cardVO.id)
-    for i = 1, #spellCfg do
-        local performVO = ExecuteNode(self.sess,spellCfg[i],nil,param)
-        EventManager:Emit("PerfomerPushNode", performVO)
-    end
+    -- for i = 1, #spellCfg do
+    --     local performVO = ExecuteNode(self.sess,spellCfg[i],nil,param)
+    --     EventManager:Emit("PerfomerPushNode", performVO)
+    -- end
 
     return true
 end

@@ -18,7 +18,7 @@ end
 
 function BeginState:Enter()
     EventManager:Emit(EventConst.ON_ENTER_BEGIN_STATE)
-    self.next = FSM.SessionType.EmbattleHero
+    self.next = FSM.SessionType.Embattle
 end
 
 function BeginState:Update()

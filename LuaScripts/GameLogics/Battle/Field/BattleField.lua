@@ -8,6 +8,7 @@ local Creature = require("GameLogics.Battle.Field.Unit.Creature")
 local EventConst = require("GameCore.Constant.EventConst")
 local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
 local CardExecutor = require("GameLogics.Battle.Field.Card.CardExecutor")
+local SpellExecutor = require("GameLogics.Battle.Field.Effect.SpellExecutor")
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
 function BattleField:ctor(sess)
@@ -21,38 +22,31 @@ function BattleField:Init()
     self.cuid = 0 -- 卡片uid
     self.units = {}
     self.heros = {}
-    ---@type CardVO[]
-    self.cards = {}
-    self.handCards = {}
     self.heroCards = {}
-    self.heroGrave = {}
-    self.cardExcutor = CardExecutor.new(self.sess)
+
+    self.cardExecutor = CardExecutor.new(self.sess)
+    self.spellExecutor = SpellExecutor.new(self.sess)
 
     self:Register()
 end
 
+function BattleField:Update(delta)
+    self.spellExecutor:Update(delta)
+end
+
 function BattleField:Register()
-    EventManager:On("ExcuteCard", self.PlayCard, self)
-    EventManager:On(EventConst.ON_ENTER_BEGIN_STATE, self.OnEnterBeginState, self)
+    EventManager:On("ExecuteCard", self.PlayCard, self)
+    EventManager:On("ExecuteAction", self.PlayAction, self)
+    EventManager:On(EventConst.ON_BEGIN_BATTLE, self.OnBeginBattle, self)
 end
 
 ------------------------------------- event functions ------------------------------
-function BattleField:OnEnterBeginState()
-    self.heroCards = {}
-    for i = 1, #self.heroGrave do
-        self.heroGrave[i].resetRound = self.heroGrave[i].resetRound - 1
-        if self.heroGrave[i].resetRound == 0 then
-            local vo = ConfigManager:GetCardConfig(self.heroGrave[i].id)
-            self.cuid = self.cuid + 1
-            vo.uid = self.cuid
-            table.insert(self.heroCards, vo)
-        end
-    end
+function BattleField:OnBeginBattle()
 end
 
 ------------------------------------- unit functions ------------------------------
 function BattleField:CreateUnit(unitVO)
-    local unit = Creature.new(self.sess,unitVO)
+    local unit = Creature.new(self.sess, unitVO)
     self.uid = self.uid + 1
     unit.uid = self.uid
 
@@ -61,27 +55,6 @@ function BattleField:CreateUnit(unitVO)
 end
 
 ------------------------------------- card functions ------------------------------
-
-function BattleField:RemoveHandCard(cuid)
-end
-
-function BattleField:FindHandCards(cuid)
-    for i = 1, #self.handCards do
-        if self.handCards[i].uid == cuid then
-            return self.handCards[i]
-        end
-    end
-    return nil
-end
-
-function BattleField:RemoveHandCard(cuid)
-    for i = 1, #self.heroCards do
-        if self.handCards[i].uid == cuid then
-            table.remove(self.handCards, i)
-        end
-    end
-    EventManager.Emit(EventConst.ON_CARD_CHANGE)
-end
 
 function BattleField:FindHeroCards(cuid)
     for i = 1, #self.heroCards do
@@ -104,8 +77,12 @@ end
 ------------------------------------- game logic ------------------------------
 
 function BattleField:InjectData(heroIds)
+    self.heroCards = {}
     for i = 1, #heroIds do
-        table.insert(self.heroGrave, {resetRound = i, id = heroIds[i]})
+        local vo = ConfigManager:GetCardConfig(heroIds[i])
+        self.cuid = self.cuid + 1
+        vo.uid = self.cuid
+        table.insert(self.heroCards, vo)
     end
 end
 
@@ -118,7 +95,7 @@ function BattleField:PlayCard(cuid, param)
         return Debug.Error("无法施放卡牌,原因:无法找到该卡牌")
     end
 
-    if self.cardExcutor:ExecuteCard(cardVO, param) then
+    if self.cardExecutor:ExecuteCard(cardVO, param) then
         -- play card completed
         if self.sess.state == FSM.SessionType.EmbattleHero then
             self:RemoveHeroCard(cuid)

@@ -4,11 +4,9 @@ local SessionFSM = class("SessionFSM")
 SessionFSM.SessionType = {
     PreBattle = 0,
     Begin = 1,
-    EmbattleHero = 2,
-    Schedule = 3,
-    PlayCard = 4,
-    Action = 5,
-    Final = 6
+    Embattle = 2,
+    Action = 3,
+    Final = 4
 }
 
 function SessionFSM:ctor(sess)
