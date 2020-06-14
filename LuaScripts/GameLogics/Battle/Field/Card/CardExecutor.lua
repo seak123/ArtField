@@ -1,6 +1,5 @@
 ---@class CardExecutor
 local CardExecutor = class("CardExecutor")
-local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
 local EventConst = require("GameCore.Constant.EventConst")
 local UIConst = require("GameLogics.Constant.UIConst")
 
@@ -40,37 +39,16 @@ end
 function CardExecutor:RefreshView()
     self.cardPanelLb:RefreshScroll()
 end
--------------------------------   card logic ------------------------------
--- local function ExecuteNode(sess,spellCfg, rootVO, param)
---     local vo = require(BaseNode.NodePath[spellCfg.nodeType]).new(sess, spellCfg):Excute(param)
---     if rootVO == nil then
---         rootVO = vo
---     else
---         rootVO.childCount = rootVO.childCount + 1
---         table.insert(rootVO.childs, vo)
---     end
-
---     if rootVO.childs == nil then
---         rootVO.childs = {}
---         rootVO.childCount = 0
---     end
-
---     if spellCfg.childs ~= nil and #spellCfg.childs > 0 then
---         for i = 1, #spellCfg.childs do
---             ExecuteNode(spellCfg.childs[i], vo, param)
---         end
---     end
-
---     return rootVO
--- end
+-------------------------------   card logic ------------------------------ 
 
 function CardExecutor:ExecuteCard(cardVO, param)
     local spellCfg = ConfigManager:GetSpellConfig(cardVO.id)
-    -- for i = 1, #spellCfg do
-    --     local performVO = ExecuteNode(self.sess,spellCfg[i],nil,param)
-    --     EventManager:Emit("PerfomerPushNode", performVO)
-    -- end
-
+    local targetParams = {
+        caster = nil,
+        target = nil,
+        point = {x=param.selectPos.x,y=param.selectPos.y}
+    }
+    self.sess.field.spellExecutor:ExecuteSpell(spellCfg,targetParams)
     return true
 end
 

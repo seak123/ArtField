@@ -6,7 +6,6 @@
 local BattleField = class("BattleField")
 local Creature = require("GameLogics.Battle.Field.Unit.Creature")
 local EventConst = require("GameCore.Constant.EventConst")
-local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
 local CardExecutor = require("GameLogics.Battle.Field.Card.CardExecutor")
 local SpellExecutor = require("GameLogics.Battle.Field.Effect.SpellExecutor")
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
@@ -36,13 +35,9 @@ end
 
 function BattleField:Register()
     EventManager:On("ExecuteCard", self.PlayCard, self)
-    EventManager:On("ExecuteAction", self.PlayAction, self)
-    EventManager:On(EventConst.ON_BEGIN_BATTLE, self.OnBeginBattle, self)
 end
 
 ------------------------------------- event functions ------------------------------
-function BattleField:OnBeginBattle()
-end
 
 ------------------------------------- unit functions ------------------------------
 function BattleField:CreateUnit(unitVO)
@@ -51,6 +46,9 @@ function BattleField:CreateUnit(unitVO)
     unit.uid = self.uid
 
     self.units[unit.uid] = unit
+
+    --- todo improve
+    CS.LuaCallCSUtils.CreateUnit(unit.uid, unitVO, unitVO.initPos.x, unitVO.initPos.y)
     return self.uid
 end
 
@@ -95,14 +93,7 @@ function BattleField:PlayCard(cuid, param)
         return Debug.Error("无法施放卡牌,原因:无法找到该卡牌")
     end
 
-    if self.cardExecutor:ExecuteCard(cardVO, param) then
-        -- play card completed
-        if self.sess.state == FSM.SessionType.EmbattleHero then
-            self:RemoveHeroCard(cuid)
-        else
-            self:RemoveHandCard(cuid)
-        end
-    end
+    self.cardExecutor:ExecuteCard(cardVO, param)
 end
 
 return BattleField

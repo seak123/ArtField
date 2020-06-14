@@ -18,14 +18,14 @@ end
 
 function EmbattleState:Enter()
     --初始化布阵面板
-    self.sess.field.cardExcutor:SwitchState(CardExecutor.State.Hero)
-    self.sess.field.cardExcutor.cardPanelLb:SetBtnText("开战")
+    self.sess.field.cardExecutor:SwitchState(CardExecutor.State.Hero)
+    self.sess.field.cardExecutor.cardPanelLb:SetBtnText("开战")
 
     local func = function()
         self.next = FSM.SessionType.Action
     end
 
-    self.sess.field.cardExcutor.cardPanelLb:SetBtnCallback(func)
+    self.sess.field.cardExecutor.cardPanelLb:SetBtnCallback(func)
 end
 
 function EmbattleState:Update()

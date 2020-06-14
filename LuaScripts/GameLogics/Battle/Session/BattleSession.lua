@@ -5,9 +5,7 @@ local FSM = require("GameLogics.Battle.Session.SessionFSM")
 local PreBattleState = require("GameLogics.Battle.Session.States.PreBattle")
 local BeginState = require("GameLogics.Battle.Session.States.Begin")
 local EmbattleState = require("GameLogics.Battle.Session.States.Embattle")
-local ScheduleState = require("GameLogics.Battle.Session.States.Schedule")
 local ActionState = require("GameLogics.Battle.Session.States.ActionState")
-local PlayCardState = require("GameLogics.Battle.Session.States.PlayCard")
 local FinalState = require("GameLogics.Battle.Session.States.Final")
 local MapMng = require("GameLogics.Battle.Map.MapManager")
 local BattleField = require("GameLogics.Battle.Field.BattleField")
@@ -50,6 +48,7 @@ end
 
 function BattleSession:Update(delta)
     self.fsm:Update(delta)
+    self.field:Update(delta)
 end
 
 function BattleSession:CleanUp()

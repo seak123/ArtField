@@ -1,9 +1,6 @@
---[[
-    author:yaxinge
-    time:2020-05-16 19:47:17
-]]
+
 local this = {}
-local BaseNode = require("GameLogics.Battle.Action.Nodes.BaseNode")
+local SpawnHero = require("GameLogics.Config.Spell.Card.SpawnHero")
 
 ---@class CardVO
 local CardVO = {
@@ -21,16 +18,7 @@ this.Cards = {
 }
 
 this.CardSpells = {
-    [1] = {
-        {nodeType = BaseNode.NodeType.Summon, unitId = 1}
-    },
-    [99] = {
-        {
-            nodeType = BaseNode.NodeType.Summon,
-            unitId = 1,
-            childs = {{nodeType = BaseNode.NodeType.Summon}, {nodeType = BaseNode.NodeType.Summon}}
-        }
-    }
+    [1] = SpawnHero.new(1),
 }
 ---@class UnitVO
 local UnitVO = {

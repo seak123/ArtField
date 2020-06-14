@@ -17,7 +17,6 @@ function BeginState:ctor(sess)
 end
 
 function BeginState:Enter()
-    EventManager:Emit(EventConst.ON_ENTER_BEGIN_STATE)
     self.next = FSM.SessionType.Embattle
 end
 
