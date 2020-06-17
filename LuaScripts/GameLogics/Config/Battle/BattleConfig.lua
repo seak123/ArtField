@@ -34,11 +34,12 @@ this.UnitConfig = {
     --D:\Artifield\Assets\Resources\Battle\Character\Modles\SwordShield\Prefab
     [1] = {
         id = 1,
-        speed = 5,
+        speed = 10,
         hp = 6,
         attack = 3,
+        attackTime = 1,
         attackRange = 1,
-        mobility = 2,
+        rage = 50,
         prefabPath = "Battle/Character/Modles/SwordShield/Prefab/SwordShield"
     }
 }

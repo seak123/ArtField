@@ -1,6 +1,6 @@
 ---@class ConfigManager
 local ConfigManager = class("ConfigManager")
-local CardConfig = require("GameLogics.Config.Battle.CardConfig")
+local CardConfig = require("GameLogics.Config.Battle.BattleConfig")
 
 function ConfigManager:ctor()
 end

@@ -50,11 +50,11 @@ function DebugUtil.Log(...)
 end
 
 function DebugUtil.Warn(...)
-    UnityDebug.LogWarning(...)
+    UnityDebug.LogWarning(parseContent(...))
 end
 
 function DebugUtil.Error(...)
-    UnityDebug.LogError(...)
+    UnityDebug.LogError(parseContent(...))
 end
 
 return DebugUtil

@@ -5,7 +5,6 @@
 local LuaBehaviour = require("GameCore.Base.Framework.LuaBehaviour")
 local EmbattleItem = class("EmbattleItem", LuaBehaviour)
 local UIConst = require("GameLogics.Constant.UIConst")
-local CardCfg = require("GameLogics.Config.Battle.CardConfig")
 
 local setting = {
     Elements = {

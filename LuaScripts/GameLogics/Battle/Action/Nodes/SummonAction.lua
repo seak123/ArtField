@@ -1,7 +1,6 @@
 local base = require("GameLogics.Battle.Action.Nodes.BaseAction")
 ---@class SummonNode
 local Summon = class("SummonNode", base)
-local CardConfig = require("GameLogics.Config.Battle.CardConfig")
 
 ---@param sess BattleSession
 ---@param vo SummonVO

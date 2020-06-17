@@ -5,7 +5,6 @@
 local base = require("GameLogics.Battle.Action.Nodes.BaseNode")
 ---@class SummonNode
 local Summon = class("SummonNode", base)
-local CardConfig = require("GameLogics.Config.Battle.CardConfig")
 
 Summon.SummonType = {
     Hero = 1, --召唤英雄
