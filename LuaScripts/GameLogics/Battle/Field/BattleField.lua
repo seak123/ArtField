@@ -46,9 +46,6 @@ function BattleField:CreateUnit(unitVO)
     unit.uid = self.uid
 
     self.units[unit.uid] = unit
-
-    --- todo improve
-    CS.LuaCallCSUtils.CreateUnit(unit.uid, unitVO, unitVO.initPos.x, unitVO.initPos.y)
     return self.uid
 end
 

@@ -1,10 +1,9 @@
---[[
-    author:yaxinge
-    time:2020-05-16 18:33:23
-]]
 ---@class Creature
-local Creature = class("Createure")
+local Creature = class("Creature")
 local Properties = require("GameLogics.Battle.Field.Unit.Components.Properties")
+local Avatar = require("GameLogics.Battle.Field.Unit.Components.Avatar")
+local Brain = require("GameLogics.Battle.Field.Unit.Components.ArtiBrain")
+local MoveCtrl = require("GameLogics.Battle.Field.Unit.Components.MoveController")
 
 function Creature:ctor(sess,unitVO)
     self.vo = unitVO
@@ -12,10 +11,16 @@ end
 
 function Creature:Init()
     self.properties = Properties.new(self)
+    self.avatar = Avatar.new(self)
+    self.brain = Brain.new(self)
+    self.moveCtrl = MoveCtrl.new(self)
+end
+
+function Creature:Update(delta)
 end
 
 
-function Creature:NoramlAttack()
+function Creature:DoAttack()
 end
 
 return Creature
