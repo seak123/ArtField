@@ -17,10 +17,15 @@ function Creature:Init()
 end
 
 function Creature:Update(delta)
+    self.brain:Update(delta)
+    self.moveCtrl:Update(delta)
 end
 
 
-function Creature:DoAttack()
+function Creature:DoAttack(delta)
+end
+
+function Creature:UpdateAttackCoolDown(delta)
 end
 
 return Creature
