@@ -12,9 +12,7 @@ local BattleField = require("GameLogics.Battle.Field.BattleField")
 local EventConst = require("GameCore.Constant.EventConst")
 
 ---@class BattleSessionVO
-local BattleSessionVO = {
-
-}
+local BattleSessionVO = {}
 
 function BattleSession:ctor(vo)
     self.vo = vo
@@ -22,12 +20,17 @@ end
 
 function BattleSession:Init()
     self.sceneId = self.vo.id
+    self.curTime = os.time()
     self.myHeros = self.vo.myHeros
-    self.map = MapMng.new(self,{
-        width = 8,
-        height = 8,
-    })
-    
+    self.map =
+        MapMng.new(
+        self,
+        {
+            width = 8,
+            height = 8
+        }
+    )
+
     self.field = BattleField.new(self)
     CS.BattleManager.Instance:StartBattle()
 
@@ -35,7 +38,7 @@ function BattleSession:Init()
     self.state = nil
 
     self.fsm = FSM.new(self)
-    self.fsm:RegisterState(FSM.SessionType.PreBattle,PreBattleState.new(self))
+    self.fsm:RegisterState(FSM.SessionType.PreBattle, PreBattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Begin, BeginState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Embattle, EmbattleState.new(self))
     self.fsm:RegisterState(FSM.SessionType.Action, ActionState.new(self))
@@ -49,6 +52,8 @@ end
 function BattleSession:Update(delta)
     self.fsm:Update(delta)
     self.field:Update(delta)
+
+    self.curTime = self.curTime + delta
 end
 
 function BattleSession:CleanUp()

@@ -45,4 +45,10 @@ function Avatar:SwitchAction(type)
     end
 end
 
+function Avatar:TurnToTarget(target)
+end
+
+function Avatar:TurnToPos(pos)
+end
+
 return Avatar

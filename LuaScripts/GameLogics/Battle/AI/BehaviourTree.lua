@@ -12,7 +12,7 @@ function Tree:ctor()
     self.root = nil
 end
 
-function Tree:Execute()
+function Tree:Execute(delta)
 end
 
 return Tree

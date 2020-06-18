@@ -38,6 +38,7 @@ this.UnitConfig = {
         hp = 6,
         attack = 3,
         attackTime = 1,
+        attackAnim = 0.5,
         attackRange = 1,
         rage = 50,
         prefabPath = "Battle/Character/Modles/SwordShield/Prefab/SwordShield"

@@ -4,7 +4,8 @@ local Properties = class("Properties")
 Properties.type = {
     value = 0,
     ratio = 1,
-    mix = 2
+    mix = 2,
+    const = 3
 }
 
 Properties.define = {
@@ -12,6 +13,7 @@ Properties.define = {
     speed = Properties.type.ratio,
     attack = Properties.type.mix,
     attackRange = Properties.type.value,
+    attackAnim = Properties.type.const,
     attackTime = Properties.type.ratio,
     rage = Properties.type.value
 }
@@ -30,10 +32,12 @@ function Properties:Init(vo)
         elseif type == Properties.type.ratio then
             self[prop] = vo[prop]
             self[prop .. "_ratio"] = 0
-        else
+        elseif type == Properties.type.mix then
             self[prop] = vo[prop]
             self[prop .. "_add"] = 0
             self[prop .. "_ratio"] = 0
+        else
+            self[prop] = vo[prop]
         end
     end
 end
@@ -48,14 +52,16 @@ function Properties:GetProperty(name)
         return self[name] + self[name .. "_add"]
     elseif type == Properties.type.ratio then
         return self[name] + self[name] * self[name .. "_ratio"] * 0.01
-    else
+    elseif type == Properties.type.mix then
         return self[name] + self[name .. "_add"] + self[name .. "_ratio"] * 0.01
+    else
+        return self[name]
     end
 end
 
-function Properties:ChangeProperty(name,value)
+function Properties:ChangeProperty(name, value)
     if self[name] == nil then
-        Debug.Warn("Try changing Invalid property [",name,"]");
+        Debug.Warn("Try changing Invalid property [", name, "]")
     end
     self[name] = self[name] + value
 end
