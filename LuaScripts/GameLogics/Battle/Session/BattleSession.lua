@@ -21,6 +21,7 @@ end
 function BattleSession:Init()
     self.sceneId = self.vo.id
     self.curTime = os.time()
+    math.randomseed(self.curTime)
     self.myHeros = self.vo.myHeros
     self.map =
         MapMng.new(

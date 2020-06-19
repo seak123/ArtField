@@ -2,7 +2,7 @@
 local Tree = class("BehaviourTree")
 
 Tree.NodeState = {
-    Finish = 0,
+    Success = 0,
     Running = 1,
     Fail = 2,
 }
