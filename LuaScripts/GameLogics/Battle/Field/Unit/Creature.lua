@@ -12,11 +12,13 @@ function Creature:ctor(sess, unitVO)
 end
 
 function Creature:Init()
+    -- init pos
+    self.moveCtrl = MoveCtrl.new(self)
+
     self.properties = Properties.new(self)
     self.avatar = Avatar.new(self)
     self.brain = Brain.new(self)
-    self.moveCtrl = MoveCtrl.new(self)
-
+    
     -- attack storage [0,1] record the attack process
     self.attackStorage = 0
     self.lastAttackTime = 0
@@ -26,9 +28,6 @@ end
 function Creature:Update(delta)
     self.brain:Update(delta)
     self.moveCtrl:Update(delta)
-end
-
-function Creature:SwitchState(newState)
 end
 
 function Creature:DoAttack(delta,target)

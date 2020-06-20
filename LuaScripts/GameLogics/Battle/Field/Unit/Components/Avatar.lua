@@ -20,8 +20,8 @@ function Avatar:Init()
         CS.LuaCallCSUtils.CreateUnit(
         self.master.uid,
         self.master.vo,
-        self.master.vo.initPos.x,
-        self.master.vo.initPos.y
+        self.master.moveCtrl.position.x,
+        self.master.moveCtrl.position.z
     )
     self.curState = Avatar.ActionType.Idle
     self:SwitchAction(Avatar.ActionType.Idle)
@@ -36,7 +36,9 @@ end
 
 function Avatar:SwitchAction(type)
     local animator = self:GetAnimator()
-    if nil == animator then return end
+    if nil == animator then
+        return
+    end
 
     if type == self.curState then
         -- replay current action
