@@ -1,6 +1,6 @@
-local base = require("GameLogics.Battle.Action.Nodes.BaseAction")
----@class SummonNode
-local Summon = class("SummonNode", base)
+local base = require("GameLogics.Battle.SpellAction.Actions.BaseSp")
+---@class SummonSp
+local Summon = class("SummonSp", base)
 
 ---@param sess BattleSession
 ---@param vo SummonVO

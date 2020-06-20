@@ -9,6 +9,11 @@ function Sequence:ctor()
     self.lastIndex = 0
 end
 
+function Sequence:CleanUp()
+    self.running = false
+    self.lastIndex = 0
+end
+
 -- 顺序执行
 function Sequence:Execute(delta)
     for i = self.lastIndex, #self.actions do
