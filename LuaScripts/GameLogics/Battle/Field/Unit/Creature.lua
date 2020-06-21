@@ -9,6 +9,8 @@ function Creature:ctor(sess, unitVO)
     ---@type BattleSession
     self.sess = sess
     self.vo = unitVO
+
+    self:Init()
 end
 
 function Creature:Init()
@@ -28,6 +30,10 @@ end
 function Creature:Update(delta)
     self.brain:Update(delta)
     self.moveCtrl:Update(delta)
+end
+
+function Creature:GetPos()
+    return self.moveCtrl.position
 end
 
 function Creature:DoAttack(delta,target)

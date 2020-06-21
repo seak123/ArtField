@@ -1637,6 +1637,17 @@ function table.remove_if(table, func)
     end
 end
 
+function table.find_if(table,func)
+    local len = #table
+    for read=1,len do
+        local e = table[read]
+        if func(e) then 
+            return e
+        end
+    end
+    return nil
+end
+
 function clamp( num,min,max )
     if num <min then
         num = min

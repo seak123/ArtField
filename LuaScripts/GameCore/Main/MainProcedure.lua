@@ -1,7 +1,7 @@
 require("GameCore.Base.Utils.Functions")
 require("GameCore.Base.Utils.Handle")
 require("GameCore.Base.Utils.List")
-
+_G.Math = require("GameCore.Base.Utils.MathUtil")
 _G.Debug = require("GameLogics.Utils.DebugUtil")
 Debug.Log("MainProcedure begin ...")
 

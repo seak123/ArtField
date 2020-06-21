@@ -49,6 +49,10 @@ function BattleField:CreateUnit(unitVO)
     return self.uid
 end
 
+function BattleField:FindUnit(uid)
+    return self.units[uid]
+end
+
 ------------------------------------- card functions ------------------------------
 
 function BattleField:FindHeroCards(cuid)

@@ -56,7 +56,7 @@ function Spell:BindEvents()
 end
 
 function Spell:DoAction(actVO)
-    local node = require("GameLogics.Battle.Action.Nodes." .. actVO.type).new(self.sess, actVO, self.params)
+    local node = require("GameLogics.Battle.SpellAction.Actions." .. actVO.type).new(self.sess, actVO, self.params)
     table.insert(self.actions, node)
 end
 

@@ -8,7 +8,8 @@ Single.SelectType = {
     Random = 1 --随机选择
 }
 
-function Single:ctor()
+function Single:ctor(tree)
+    self.tree = tree
     self.actions = nil
     self.running = false
     self.lastIndex = 0

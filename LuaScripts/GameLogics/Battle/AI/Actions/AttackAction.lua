@@ -3,7 +3,8 @@ local base = require("GameLogics.Battle.AI.Actions.BaseAction")
 local Atk = class("AttackAction",base)
 local BT = require("GameLogics.Battle.AI.BehaviourTree")
 
-function Atk:ctor()
+function Atk:ctor(tree)
+    self.tree = tree
     self.decorators = nil
     self.targetUid = 0
     self.running = false

@@ -9,7 +9,7 @@ function this:ctor(param1)
             name = base.SpellEvents.OnSpellStart,
             actions = {
                 {
-                    type = "SummonAction",
+                    type = "SummonSp",
                     unitId = param1,
                 }
             }
