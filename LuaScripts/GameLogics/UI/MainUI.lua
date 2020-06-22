@@ -44,7 +44,7 @@ function MainUI:OnBattleBtn()
     CS.GameSceneManager.Instance:AddSceneLoadedOnceListener(
         function()
             MainUIManager.Hide()
-            BattleManager:StartBattle({id = 1, myHeros = {1,2}})
+            BattleManager:StartBattle({id = 1, myHeros = {{1}, {1}}})
         end
     )
     CS.SceneUtil.SwitchScene("DemoBattleScene", nil)

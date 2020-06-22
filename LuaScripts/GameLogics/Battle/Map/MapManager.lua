@@ -208,7 +208,7 @@ function MapMng:GetEmptyGrid(x, z)
     local forward
     local nowPos = {x = x, z = z}
     local checkFunc = function(index)
-        forward = direction[dirKey % 4]
+        forward = direction[dirKey % 4+1]
         for i = 1, index do
             nowPos.x = nowPos.x + forward.x
             nowPos.z = nowPos.z + forward.z

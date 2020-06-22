@@ -17,7 +17,7 @@ function Summon:Update(delta)
         x = self.params.point.x,
         y = self.params.point.y
     }
-    self.sess.field:CreateUnit(vo)
+    self.sess.field:CreateUnit(vo,self.params.caster.camp)
     return true
 end
 

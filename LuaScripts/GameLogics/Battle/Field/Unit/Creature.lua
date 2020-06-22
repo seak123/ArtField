@@ -9,7 +9,8 @@ function Creature:ctor(sess, unitVO)
     ---@type BattleSession
     self.sess = sess
     self.vo = unitVO
-
+    self.camp = self.vo.camp
+    self.uid = self.vo.uid
     self:Init()
 end
 

@@ -31,7 +31,14 @@ end
 --------------------------------  card view -----------------------
 function CardExecutor:SwitchState(state)
     if state == CardExecutor.State.Hero then
-        self.cardPanelLb:SetData(self.sess.field.heroCards)
+        local data = {}
+        for i = 1, #self.sess.field.heroCards[1] do
+            table.insert(data, self.sess.field.heroCards[1][i])
+        end
+        for i = 1, #self.sess.field.heroCards[2] do
+            table.insert(data, self.sess.field.heroCards[2][i])
+        end
+        self.cardPanelLb:SetData(data)
     elseif state == CardExecutor.State.Normal then
     end
 end
@@ -41,10 +48,10 @@ function CardExecutor:RefreshView()
 end
 -------------------------------   card logic ------------------------------ 
 
-function CardExecutor:ExecuteCard(cardVO, param)
+function CardExecutor:ExecuteCard(camp,cardVO, param)
     local spellCfg = ConfigManager:GetSpellConfig(cardVO.id)
     local targetParams = {
-        caster = {camp = 1},
+        caster = {camp = camp},
         target = nil,
         point = {x=param.selectPos.x,y=param.selectPos.y}
     }
