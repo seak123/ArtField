@@ -4,8 +4,13 @@ local Single = class("SingleSelector", base)
 local BT = require("GameLogics.Battle.AI.BehaviourTree")
 
 Single.SelectType = {
-    Default = 0, --默认优先级递减
-    Random = 1 --随机选择
+    Default = "Default", --默认优先级递减
+    Random = "Random" --随机选择
+}
+
+Single.ExecuteMap = {
+    [Single.SelectType.Default] = Single.DefaultExecutor,
+    [Single.SelectType.Random] = Single.RandomExecutor
 }
 
 function Single:ctor(tree)
@@ -14,16 +19,11 @@ function Single:ctor(tree)
     self.running = false
     self.lastIndex = 0
     self.selectType = Single.SelectType.Default
-
-    self.executors = {
-        [Single.SelectType.Default] = Single.DefaultExecutor,
-        [Single.SelectType.Random] = Single.RandomExecutor
-    }
 end
 
 -- 选择其一执行
 function Single:Execute(delta)
-    return self.executors[self.selectType](self, delta)
+    return Single.ExecuteMap[self.selectType](self, delta)
 end
 
 function Single:CleanUp()

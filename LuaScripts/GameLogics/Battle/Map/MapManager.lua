@@ -61,6 +61,13 @@ function MapMng:GetMapGridInfo(x, z)
     end
     return self.mapGrids[index]
 end
+
+function MapMng:GetDist(pointA, pointB)
+    local delX = math.abs(pointA.x - pointB.x)
+    local delZ = math.abs(pointA.z - pointB.z)
+    local diagLength = math.min(delX, delZ)
+    return diagLength * Math.diagonalFactor + math.max(delX, delZ) - diagLength
+end
 ---@param px int coord-x
 ---@param pz int coord-z
 function MapMng:GetMapGridCenter(px, pz)
@@ -85,10 +92,7 @@ end
 -- a* find a path of source->target, and return the next point in this path
 function MapMng:AStar(source, target)
     local distCal = function(pos)
-        local delX = math.abs(pos.x - target.x)
-        local delZ = math.abs(pos.z - target.z)
-        local diagLength = math.min(delX, delZ)
-        return diagLength * Math.diagonalFactor + math.max(delX, delZ) - diagLength
+        return self:GetDist(pos,target)
     end
     local queue = {
         {

@@ -44,7 +44,7 @@ end
 function CardExecutor:ExecuteCard(cardVO, param)
     local spellCfg = ConfigManager:GetSpellConfig(cardVO.id)
     local targetParams = {
-        caster = nil,
+        caster = {camp = 1},
         target = nil,
         point = {x=param.selectPos.x,y=param.selectPos.y}
     }

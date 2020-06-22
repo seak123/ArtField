@@ -19,7 +19,10 @@ end
 function BattleField:Init()
     self.uid = 0 -- 单位uid
     self.cuid = 0 -- 卡片uid
-    self.units = {}
+    self.units = {
+        {},
+        {}
+    }
     self.heros = {}
     self.heroCards = {}
 
@@ -40,17 +43,41 @@ end
 ------------------------------------- event functions ------------------------------
 
 ------------------------------------- unit functions ------------------------------
-function BattleField:CreateUnit(unitVO)
+function BattleField:CreateUnit(unitVO, camp)
     local unit = Creature.new(self.sess, unitVO)
     self.uid = self.uid + 1
     unit.uid = self.uid
+    unit.camp = camp ~= nil and camp or 1
 
-    self.units[unit.uid] = unit
+    self.units[unit.camp][unit.uid] = unit
     return self.uid
 end
 
 function BattleField:FindUnit(uid)
-    return self.units[uid]
+    return self.units[1][uid] or self.units[2][uid]
+end
+
+function BattleField:FindUnitIf(func)
+    for uid, unit in pairs(self.units[1]) do
+        if func(unit) then
+            return unit
+        end
+    end
+    for uid, unit in pairs(self.units[2]) do
+        if func(unit) then
+            return unit
+        end
+    end
+    return nil
+end
+
+function BattleField:UnitForeach(func)
+    for uid, unit in pairs(self.units[1]) do
+        func(unit)
+    end
+    for uid, unit in pairs(self.units[2]) do
+        func(unit)
+    end
 end
 
 ------------------------------------- card functions ------------------------------
