@@ -1,5 +1,4 @@
 local DebugUtil = {}
-local UnityDebug = CS.UnityEngine.Debug
 
 local function parseContent(...)
     local parseFuncSimple = function(msg)
@@ -46,15 +45,27 @@ local function parseContent(...)
 end
 
 function DebugUtil.Log(...)
-    UnityDebug.Log(parseContent(...))
+    if SystemConst.logicMode then
+        print("[Log]"..parseContent(...))
+    else
+        CS.UnityEngine.Debug.Log(parseContent(...))
+    end
 end
 
 function DebugUtil.Warn(...)
-    UnityDebug.LogWarning(parseContent(...))
+    if SystemConst.logicMode then
+        print("[Warn]"..parseContent(...))
+    else
+        CS.UnityEngine.Debug.LogWarning(parseContent(...))
+    end
 end
 
 function DebugUtil.Error(...)
-    UnityDebug.LogError(parseContent(...))
+    if SystemConst.logicMode then
+        print("[Error]"..parseContent(...))
+    else
+        CS.UnityEngine.Debug.LogError(parseContent(...))
+    end
 end
 
 return DebugUtil

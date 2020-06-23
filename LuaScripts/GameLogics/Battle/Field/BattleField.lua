@@ -23,6 +23,10 @@ function BattleField:Init()
         {},
         {}
     }
+    self.campInfo = {
+        {num = 0},
+        {num = 0}
+    }
     self.heroCards = {{}, {}}
 
     self.cardExecutor = CardExecutor.new(self.sess)
@@ -33,6 +37,11 @@ end
 
 function BattleField:Update(delta)
     self.spellExecutor:Update(delta)
+    self:UnitForeach(
+        function(unit)
+            unit:Update(delta)
+        end
+    )
 end
 
 function BattleField:Register()
@@ -50,7 +59,13 @@ function BattleField:CreateUnit(unitVO, camp)
     local unit = Creature.new(self.sess, unitVO)
 
     self.units[unit.camp][unit.uid] = unit
+    self.campInfo[unit.camp].num = self.campInfo[unit.camp].num + 1
     return self.uid
+end
+
+function BattleField:RemoveUnit(unit)
+    self.units[unit.camp][unit.uid] = nil
+    self.campInfo[unit.camp].num = self.campInfo[unit.camp].num - 1
 end
 
 function BattleField:FindUnit(uid)
@@ -140,6 +155,21 @@ function BattleField:PlayCard(camp, cuid, param)
     end
 
     self.cardExecutor:ExecuteCard(camp, cardVO, param)
+end
+
+function BattleField:CheckBattleResult()
+    local num1 = self.campInfo[1].num
+    local num2 = self.campInfo[2].num
+    if num1 > 0 and num2 > 0 then
+        return -1
+    elseif num1 <= 0 and num2 <= 0 then
+        -- no winner
+        return 0
+    elseif num1 <= 0 then
+        return 1
+    elseif num2 <= 0 then
+        return 2
+    end
 end
 
 return BattleField

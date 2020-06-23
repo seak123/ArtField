@@ -11,7 +11,9 @@ Avatar.ActionType = {
 
 function Avatar:ctor(master)
     self.master = master
-    self:Init()
+    if not SystemConst.logicMode then
+        self:Init()
+    end
 end
 
 function Avatar:Init()
@@ -35,6 +37,9 @@ function Avatar:GetAnimator()
 end
 
 function Avatar:SwitchAction(type)
+    if SystemConst.logicMode then
+        return
+    end
     local animator = self:GetAnimator()
     if nil == animator then
         return
@@ -46,11 +51,17 @@ function Avatar:SwitchAction(type)
         -- switch to new action
     end
 end
-
+---@param target Creature
 function Avatar:TurnToTarget(target)
+    if SystemConst.logicMode then
+        return
+    end
 end
-
+---@param pos viewPos
 function Avatar:TurnToPos(pos)
+    if SystemConst.logicMode then
+        return
+    end
 end
 
 return Avatar

@@ -15,7 +15,7 @@ function Summon:Update(delta)
     local vo = ConfigManager:GetUnitConfig(self.vo.unitId)
     vo.initPos = {
         x = self.params.point.x,
-        y = self.params.point.y
+        z = self.params.point.z
     }
     self.sess.field:CreateUnit(vo,self.params.caster.camp)
     return true

@@ -7,8 +7,8 @@ local MapMng = class("MapManager")
 
 ---@class MapVO
 local MapVO = {
-    width = 6,
-    height = 8
+    width = 0,
+    height = 0
 }
 
 ---@class GridState
@@ -33,7 +33,9 @@ end
 function MapMng:Init()
     Debug.Log("[MapManager]create map grid")
     -- create map grid mesh
-    CS.MapManager.Instance:LoadMap(self.vo.width, self.vo.height)
+    if not SystemConst.logicMode then
+        CS.MapManager.Instance:LoadMap(self.vo.width, self.vo.height)
+    end
     self.mapGrids = {}
     self.width = self.vo.width
     self.height = self.vo.height
@@ -46,6 +48,14 @@ function MapMng:Update(delta)
 end
 
 -------------- map base function ------------
+
+function MapMng:GetMapViewCenter()
+    local center = {
+        x = self.width * self.Const.GridSize / 2,
+        z = self.height * self.Const.GridSize / 2
+    }
+    return center
+end
 
 --- x in [0,width-1] ; z in [0,height-1]
 
@@ -61,12 +71,18 @@ function MapMng:GetMapGridInfo(x, z)
     end
     return self.mapGrids[index]
 end
-
+-- calculate the real dist(walk from A to B)
 function MapMng:GetDist(pointA, pointB)
     local delX = math.abs(pointA.x - pointB.x)
     local delZ = math.abs(pointA.z - pointB.z)
     local diagLength = math.min(delX, delZ)
     return diagLength * Math.diagonalFactor + math.max(delX, delZ) - diagLength
+end
+-- calculate the range dist(caster from A to B)
+function MapMng:GetRangeDist(pointA, pointB)
+    local delX = math.abs(pointA.x - pointB.x)
+    local delZ = math.abs(pointA.z - pointB.z)
+    return math.max(delX, delZ)
 end
 ---@param px int coord-x
 ---@param pz int coord-z
@@ -90,9 +106,13 @@ function MapMng:IsGridValid(x, z)
 end
 
 -- a* find a path of source->target, and return the next point in this path
-function MapMng:AStar(source, target)
+---@param offset int 允许目的点距离target的偏离范围
+function MapMng:AStar(source, target, offset)
+    if offset == nil then
+        offset = 1
+    end
     local distCal = function(pos)
-        return self:GetDist(pos,target)
+        return self:GetDist(pos, target)
     end
     local queue = {
         {
@@ -118,8 +138,8 @@ function MapMng:AStar(source, target)
     local resultP
     while #queue > 0 do
         local curP = queue[1]
-        -- if curP is target-point then return this result
-        if curP.x == target.x and curP.z == target.z then
+        -- if curP is near target-point then return this result
+        if self:GetRangeDist(curP, target) <= offset then
             resultP = curP
             break
         end
@@ -168,7 +188,7 @@ function MapMng:AStar(source, target)
         table.sort(
             queue,
             function(a, b)
-                return a.weight - b.weight
+                return a.weight < b.weight
             end
         )
     end
@@ -208,7 +228,7 @@ function MapMng:GetEmptyGrid(x, z)
     local forward
     local nowPos = {x = x, z = z}
     local checkFunc = function(index)
-        forward = direction[dirKey % 4+1]
+        forward = direction[dirKey % 4 + 1]
         for i = 1, index do
             nowPos.x = nowPos.x + forward.x
             nowPos.z = nowPos.z + forward.z
@@ -239,11 +259,18 @@ function MapMng:GetEmptyGrid(x, z)
 end
 
 function MapMng:TryCreateUnit(unit)
-    local x, z = self:GetEmptyGrid(unit.vo.initPos.x, unit.vo.initPos.y)
+    local x, z = self:GetEmptyGrid(unit.vo.initPos.x, unit.vo.initPos.z)
     local gridInfo = self:GetMapGridInfo(x, z)
     gridInfo.state = self.GridState.Occupy
     gridInfo.unit = unit
     return x, z
+end
+
+function MapMng:TryRemoveUnit(unit)
+    local pos = unit:GetPos()
+    local info = self:GetMapGridInfo(pos.x, pos.z)
+    info.state = self.GridState.Empty
+    info.unit = nil
 end
 
 function MapMng:UnitReqMove(unit, targetPos)
@@ -254,22 +281,26 @@ function MapMng:UnitReqMove(unit, targetPos)
     else
         self.moveTasks[unit.uid] = {
             goal = next,
-            vgoal = self:GetMapGridInfo(next.x, next.z)
+            vgoal = self:GetMapGridCenter(next.x, next.z)
         }
-        unit.moveCtrl.moving = true
+        unit.moveCtrl:SwitchState("walking")
         return true
     end
 end
 
 function MapMng:UpdateUnitPos(unit)
+    local nowPos = self:GetMapGridByView(unit.moveCtrl.viewPosition.x, unit.moveCtrl.viewPosition.z)
+    if nowPos.x == unit.moveCtrl.position.x and nowPos.z == unit.moveCtrl.position.z then
+        return
+    end
     local info = self:GetMapGridInfo(unit.moveCtrl.position.x, unit.moveCtrl.position.z)
     info.state = MapMng.GridState.Empty
     info.unit = nil
-    local nowPos = self:GetMapGridByView(unit.moveCtrl.viewPosition.x, unit.moveCtrl.viewPosition.z)
     unit.moveCtrl.position = nowPos
     local newInfo = self:GetMapGridInfo(unit.moveCtrl.position.x, unit.moveCtrl.position.z)
     newInfo.state = MapMng.GridState.Occupy
     newInfo.unit = unit
+    Debug.Log(unit.name .. " arrive new pos [" .. tostring(nowPos.x) .. "," .. tostring(nowPos.z) .. "]")
 end
 
 function MapMng:UpdateMoveTasks(delta)
@@ -286,7 +317,7 @@ function MapMng:UpdateMoveTasks(delta)
             -- has arrived goal
             unit.moveCtrl.viewPosition = self:GetMapGridCenter(tb.goal.x, tb.goal.z)
             self:UpdateUnitPos(unit)
-            unit.moveCtrl.moving = false
+            unit.moveCtrl:SwitchState("stop")
             self.moveTasks[uid] = nil
         else
             local forward = {

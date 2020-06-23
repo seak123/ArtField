@@ -34,6 +34,7 @@ this.UnitConfig = {
     --D:\Artifield\Assets\Resources\Battle\Character\Modles\SwordShield\Prefab
     [1] = {
         id = 1,
+        name = "剑士",
         speed = 10,
         hp = 6,
         attack = 3,

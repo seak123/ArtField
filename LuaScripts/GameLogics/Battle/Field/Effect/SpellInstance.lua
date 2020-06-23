@@ -1,12 +1,14 @@
 ---@class SpellInstance
 local Spell = class("SpellInstance")
 local Event = require("GameCore.Base.Event.Event")
+local SpellVO = require("GameLogics.Battle.Field.Effect.SpellVO")
 
 Spell.States = {
     DeActive = 0,
-    Begin = 1,
-    Running = 2,
-    Finish = 3
+    Prepare = 1,
+    Begin = 2,
+    Running = 3,
+    Finish = 4
 }
 
 function Spell:ctor(sess, vo, targetParams)
@@ -18,6 +20,13 @@ function Spell:ctor(sess, vo, targetParams)
     self.params = targetParams
 
     self.eventMap = {}
+    self:Init()
+end
+
+function Spell:Init()
+    if SpellVO.hasBehaviour(self.behavior, SpellVO.SpellBehavior.Immediate) then
+        self.state = Spell.States.Begin
+    end
     self:BindEvents()
 end
 
@@ -60,10 +69,18 @@ function Spell:DoAction(actVO)
     table.insert(self.actions, node)
 end
 
+function Spell:Preparing()
+    -- do channel or projectile here
+    return true
+end
+
 function Spell:CheckState()
     if self.state == Spell.States.DeActive then
-        self.state = Spell.States.Begin
-        return
+        self.state = Spell.States.Prepare
+    elseif self.state == Spell.States.Prepare then
+        if self:Preparing() then
+            self.state = Spell.States.Begin
+        end
     elseif self.state == Spell.States.Begin then
         self:InvokeEvent("OnSpellStart")
         self.state = Spell.States.Running

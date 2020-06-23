@@ -3,10 +3,11 @@ local SpellVO = class("SpellVO")
 
 --技能特征定义
 SpellVO.SpellBehavior = {
-    Passive = 1<<0,   --被动技能
-    Channel = 1<<1,   --需要持续施法
-    Projectile = 1<<2, --具有技能弹道
-    Command = 1<<3, --命令式技能(卡牌施法)
+    Passive = 2 ^ 0, --被动技能
+    Channel = 2 ^ 1, --需要持续施法
+    Projectile = 2 ^ 2, --具有技能弹道
+    Command = 2 ^ 3, --命令式技能(卡牌施法)
+    Immediate = 2 ^ 4 --立即执行
 }
 
 --技能事件定义
@@ -18,7 +19,7 @@ SpellVO.SpellEvents = {
     OnProjectileFinish = "OnProjectileFinish", --技能弹道结束
     OnProjectileHitUnit = "OnProjectileHitUnit", --技能弹道击中单位
     OnOwnerSpawned = "OnOwnerSpawned", --技能拥有者出生
-    OnOwnerDied = "OnOwnerDied", --技能拥有者死亡
+    OnOwnerDied = "OnOwnerDied" --技能拥有者死亡
 }
 
 ---@field behavior 技能特征
@@ -33,6 +34,10 @@ SpellVO.projectileASpeed = 0
 SpellVO.events = {}
 
 function SpellVO:ctor()
+end
+
+function SpellVO.hasBehaviour(behavior, needBehaviour)
+    return Math.bitAND(behavior, needBehaviour) > 0
 end
 
 function SpellVO.param(name)

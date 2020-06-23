@@ -3,16 +3,16 @@ local base = require("GameLogics.Battle.AI.Actions.BaseAction")
 local Atk = class("AttackAction",base)
 local BT = require("GameLogics.Battle.AI.BehaviourTree")
 
-function Atk:ctor(tree)
+function Atk:ctor(tree,vo)
     self.tree = tree
     self.decorators = nil
-    self.targetUid = 0
+    self.targetPos = nil
     self.running = false
 end
 
 function Atk:CleanUp()
     self.running = false
-    self.targetUid = 0
+    self.targetPos = nil
 end
 
 function Atk:Execute(delta)
@@ -23,8 +23,19 @@ function Atk:Execute(delta)
         end
     end
 
-    if self.targetUid == 0 then
-        -- select default enemy
+    if self.targetPos == nil then
+        return BT.NodeState.Fail
+    else
+        local target = self.tree.master.sess.map:GetMapGridInfo(self.targetPos.x,self.targetPos.z).unit
+        if target == nil then
+            -- cannot find a unit standing on target point
+            return BT.NodeState.Fail
+        end
+        if self.tree.master:DoAttack(delta,target) then
+            return BT.NodeState.Running
+        else
+            return BT.NodeState.Fail
+        end
     end
 end
 

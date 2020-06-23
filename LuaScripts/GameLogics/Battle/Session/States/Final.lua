@@ -14,7 +14,8 @@ function FinalState:ctor(sess)
 end
 
 function FinalState:Enter()
-    --self.next = FSM.SessionType.Embattle
+    -- clear session
+    BattleManager:ExitBattle()
 end
 
 function FinalState:Update()

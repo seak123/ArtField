@@ -1,15 +1,16 @@
 ---@class MoveController
 local Ctrller = class("MoveController")
+local Avatar = require("GameLogics.Battle.Field.Unit.Components.Avatar")
 
 Ctrller.State = {
-    Walking = 0,
-    Stop = 1
+    Walking = "walking",
+    Stop = "stop"
 }
 
 function Ctrller:ctor(master)
     self.master = master
     self:Init()
-    self.moving = false
+    self.state = Ctrller.State.Stop
 end
 
 function Ctrller:Init()
@@ -18,12 +19,29 @@ function Ctrller:Init()
         x = px,
         z = pz
     }
-    self.viewPosition = self.master.sess.map:GetMapGridCenter(self.position.x,self.position.z)
+    self.viewPosition = self.master.sess.map:GetMapGridCenter(self.position.x, self.position.z)
     self.curState = Ctrller.State.Stop
 end
 
-function Ctrller:MoveToPos(x, z)
-    return self.master.sess.map:UnitReqMove(self, {x = x, z = z})
+function Ctrller:Update(delta)
+end
+
+function Ctrller:SwitchState(state)
+    if state == self.state then
+        return
+    end
+    if state == Ctrller.State.Walking then
+        Debug.Log(self.master.name .. " start walking")
+        self.master.avatar:SwitchAction(Avatar.ActionType.Walk)
+    elseif state == Ctrller.State.Stop then
+        Debug.Log(self.master.name .. " stop walking")
+        self.master.avatar:SwitchAction(Avatar.ActionType.Idle)
+    end
+    self.state = state
+end
+
+function Ctrller:MoveToPos(pos)
+    return self.master.sess.map:UnitReqMove(self.master, pos)
 end
 
 return Ctrller

@@ -3,16 +3,16 @@ local base = require("GameLogics.Battle.AI.Actions.BaseAction")
 local Move = class("MoveAction", base)
 local BT = require("GameLogics.Battle.AI.BehaviourTree")
 
-function Move:ctor(tree)
+function Move:ctor(tree,vo)
     self.tree = tree
     self.decorators = nil
-    self.targetUid = 0
+    self.targetPos = nil
     self.running = false
 end
 
 function Move:CleanUp()
     self.running = false
-    self.targetUid = 0
+    self.targetPos = nil
 end
 
 function Move:Execute(delta)
@@ -22,7 +22,7 @@ function Move:Execute(delta)
             return BT.NodeState.Fail
         end
     else
-        if self.tree.master.moveCtrl.moving == true then
+        if self.tree.master.moveCtrl.state == "walking" then
             return BT.NodeState.Running
         else
             return BT.NodeState.Success

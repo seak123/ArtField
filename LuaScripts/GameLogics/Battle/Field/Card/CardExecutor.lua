@@ -1,7 +1,6 @@
 ---@class CardExecutor
 local CardExecutor = class("CardExecutor")
 local EventConst = require("GameCore.Constant.EventConst")
-local UIConst = require("GameLogics.Constant.UIConst")
 
 CardExecutor.State = {
     Hero = 1, -- 布阵英雄
@@ -12,10 +11,13 @@ CardExecutor.State = {
 function CardExecutor:ctor(sess)
     ---@type BattleSession
     self.sess = sess
-    self:Init()
+    if not SystemConst.logicMode then
+        self:Init()
+    end
 end
 
 function CardExecutor:Init()
+    local UIConst = require("GameLogics.Constant.UIConst")
     local cardPanelObj = CS.WindowsUtil.AddWindow(UIConst.CardMainPanel, UIConst.Layer.MainLayer0)
     ---@type CardPanel
     self.cardPanelLb = BehaviourManager:GetBehaviour(cardPanelObj:GetInstanceID())
@@ -23,7 +25,7 @@ function CardExecutor:Init()
 end
 
 function CardExecutor:Register()
-    EventManager:On(EventConst.ON_CARD_CHANGE,self.RefreshView,self)
+    EventManager:On(EventConst.ON_CARD_CHANGE, self.RefreshView, self)
 end
 
 function CardExecutor:UnRegister()
@@ -46,16 +48,16 @@ end
 function CardExecutor:RefreshView()
     self.cardPanelLb:RefreshScroll()
 end
--------------------------------   card logic ------------------------------ 
+-------------------------------   card logic ------------------------------
 
-function CardExecutor:ExecuteCard(camp,cardVO, param)
+function CardExecutor:ExecuteCard(camp, cardVO, param)
     local spellCfg = ConfigManager:GetSpellConfig(cardVO.id)
     local targetParams = {
         caster = {camp = camp},
         target = nil,
-        point = {x=param.selectPos.x,y=param.selectPos.y}
+        point = {x = param.selectPos.x, z = param.selectPos.y}
     }
-    self.sess.field.spellExecutor:ExecuteSpell(spellCfg,targetParams)
+    self.sess.field.spellExecutor:ExecuteSpell(spellCfg, targetParams)
     return true
 end
 

@@ -7,15 +7,17 @@ SeekTarget.SeekType = {
 }
 
 SeekTarget.ExecuteMap = {
-    [SeekTarget.SeekType.NearestEnemy] = SeekTarget.NearestEnemyFinder,
-    [SeekTarget.SeekType.FarthestEnemy] = SeekTarget.FarthestEnemyFinder
+    [SeekTarget.SeekType.NearestEnemy] = "NearestEnemyFinder",
+    [SeekTarget.SeekType.FarthestEnemy] = "FarthestEnemyFinder"
 }
 
 function SeekTarget:ctor(parent)
     self.parent = parent
+    self.seekType = SeekTarget.SeekType.NearestEnemy
 end
 
 function SeekTarget:Execute()
+    return SeekTarget[SeekTarget.ExecuteMap[self.seekType]](self)
 end
 
 function SeekTarget:NearestEnemyFinder()
@@ -27,10 +29,12 @@ function SeekTarget:NearestEnemyFinder()
     local nearstDist = 999
     local nearstUnit = nil
     local searchFunc = function(unit)
-        local dist = map:GetDist(master:GetPos(),unit)
-        if dist < nearstDist then
-            nearstDist = dist
-            nearstUnit = unit
+        if unit.camp == 3 - master.camp then
+            local dist = map:GetDist(master:GetPos(), unit:GetPos())
+            if dist < nearstDist then
+                nearstDist = dist
+                nearstUnit = unit
+            end
         end
     end
     field:UnitForeach(searchFunc)

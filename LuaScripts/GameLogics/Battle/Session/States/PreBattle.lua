@@ -1,7 +1,6 @@
-
 local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class PreBattle:BaseState
-local PreBattle = class("PreBattle",BaseState)
+local PreBattle = class("PreBattle", BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
 PreBattle.type = FSM.SessionType.PreBattle
@@ -13,8 +12,10 @@ function PreBattle:ctor(sess)
 end
 
 function PreBattle:Enter()
-     --初始化镜头
-     CS.CameraManager.Instance:InitSceneCamera(BattleManager.session.sceneId)
+    --初始化镜头
+    if not SystemConst.logicMode then
+        CS.CameraManager.Instance:InitSceneCamera(BattleManager.session.sceneId)
+    end
     self.next = FSM.SessionType.Begin
 end
 

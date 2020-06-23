@@ -1,9 +1,8 @@
 local NoticeMng = {}
-local UIConst = require("GameLogics.Constant.UIConst")
 local EventConst = require("GameCore.Constant.EventConst")
 
 NoticeMng.INIT_POS_Y = -100
-NoticeMng.NOTIC_HEIGHT =30
+NoticeMng.NOTIC_HEIGHT = 30
 
 function NoticeMng.Notice(content)
     EventManager:Emit(EventConst.ON_CREATE_NOTICE)

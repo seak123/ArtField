@@ -18,6 +18,11 @@ function ActionState:Enter()
 end
 
 function ActionState:Update()
+    local result = self.sess.field:CheckBattleResult()
+    if result >=0 then
+        Debug.Warn("Battle is over, result is "..tostring(result))
+        self.next = FSM.SessionType.Final
+    end
 end
 
 return ActionState

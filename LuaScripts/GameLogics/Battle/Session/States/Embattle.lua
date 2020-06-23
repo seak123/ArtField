@@ -18,8 +18,10 @@ end
 
 function EmbattleState:Enter()
     --初始化布阵面板
-    self.sess.field.cardExecutor:SwitchState(CardExecutor.State.Hero)
-    self.sess.field.cardExecutor.cardPanelLb:SetBtnText("开战")
+    if not SystemConst.logicMode then
+        self.sess.field.cardExecutor:SwitchState(CardExecutor.State.Hero)
+        self.sess.field.cardExecutor.cardPanelLb:SetBtnText("开战")
+    end
 
     local func = function()
         self.next = FSM.SessionType.Action

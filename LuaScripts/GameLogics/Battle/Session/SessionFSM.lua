@@ -23,7 +23,9 @@ function SessionFSM:Switch2State(key)
     if self.currState ~= nil then
         self.currState:Leave()
     end
-    CS.BattleManager.Instance:ChangeState(key)
+    if not SystemConst.logicMode then
+        CS.BattleManager.Instance:ChangeState(key)
+    end
     self.sess.state = key
     self.currState = self.fsm[key]
     self.currState:Enter()

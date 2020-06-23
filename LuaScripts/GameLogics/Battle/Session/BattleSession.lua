@@ -33,7 +33,9 @@ function BattleSession:Init()
     )
 
     self.field = BattleField.new(self)
-    CS.BattleManager.Instance:StartBattle()
+    if not SystemConst.logicMode then
+        CS.BattleManager.Instance:StartBattle()
+    end
 
     self.field:InjectData(self.myHeros)
     self.state = nil
@@ -53,11 +55,16 @@ end
 function BattleSession:Update(delta)
     self.fsm:Update(delta)
     self.field:Update(delta)
+    self.map:Update(delta)
 
     self.curTime = self.curTime + delta
 end
 
 function BattleSession:CleanUp()
+end
+
+function BattleSession:CurrentState()
+    return self.fsm.currState
 end
 
 return BattleSession

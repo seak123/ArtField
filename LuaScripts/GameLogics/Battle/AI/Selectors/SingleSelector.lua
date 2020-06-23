@@ -9,21 +9,21 @@ Single.SelectType = {
 }
 
 Single.ExecuteMap = {
-    [Single.SelectType.Default] = Single.DefaultExecutor,
-    [Single.SelectType.Random] = Single.RandomExecutor
+    [Single.SelectType.Default] = "DefaultExecutor",
+    [Single.SelectType.Random] = "RandomExecutor"
 }
 
-function Single:ctor(tree)
+function Single:ctor(tree,vo)
     self.tree = tree
     self.actions = nil
     self.running = false
     self.lastIndex = 0
-    self.selectType = Single.SelectType.Default
+    self.selectType = vo.selectType
 end
 
 -- 选择其一执行
 function Single:Execute(delta)
-    return Single.ExecuteMap[self.selectType](self, delta)
+    return Single[Single.ExecuteMap[self.selectType]](self, delta)
 end
 
 function Single:CleanUp()
