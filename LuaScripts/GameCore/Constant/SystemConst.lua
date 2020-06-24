@@ -1,5 +1,5 @@
 local this = {}
 
-this.logicMode = false
+this.logicMode = true
 
 return this

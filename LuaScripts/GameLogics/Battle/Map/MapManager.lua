@@ -15,7 +15,8 @@ local MapVO = {
 MapMng.GridState = {
     Empty = 1,
     obstacle = 2,
-    Occupy = 3
+    Occupy = 3,
+    Order = 4 --将被占用的格子
 }
 
 MapMng.Const = {
@@ -275,23 +276,32 @@ end
 
 function MapMng:TryRemoveUnit(unit)
     local pos = unit:GetPos()
-    local info = self:GetMapGridInfo(pos.x, pos.z)
-    info.state = self.GridState.Empty
-    info.unit = nil
+    -- clear pos
+    self:GetMapGridInfo(pos.x, pos.z).state = self.GridState.Empty
+    self:GetMapGridInfo(pos.x, pos.z).unit = nil
+    -- clear move task
+    local task = self.moveTasks[unit.uid]
+    if task ~= nil then
+        self:GetMapGridInfo(task.goal.x, task.goal.z).state = self.GridState.Empty
+        self.moveTasks[unit.uid] = nil
+    end
 end
 
 function MapMng:UnitReqMove(unit, targetPos)
     local next = self:AStar(unit:GetPos(), targetPos)
     if next == nil then
         -- cannot move
-        return false
+        return false,next
     else
         self.moveTasks[unit.uid] = {
             goal = next,
             vgoal = self:GetMapGridCenter(next.x, next.z)
         }
+        -- make Order
+        local info = self:GetMapGridInfo(next.x, next.z)
+        info.state = self.GridState.Order
         unit.moveCtrl:SwitchState("walking")
-        return true
+        return true,next
     end
 end
 

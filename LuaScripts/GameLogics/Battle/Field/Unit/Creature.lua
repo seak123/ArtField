@@ -6,6 +6,7 @@ local Avatar = require("GameLogics.Battle.Field.Unit.Components.Avatar")
 local Brain = require("GameLogics.Battle.Field.Unit.Components.ArtiBrain")
 local MoveCtrl = require("GameLogics.Battle.Field.Unit.Components.MoveController")
 local NormalAtkCfg = require("GameLogics.Config.Spell.Common.NormalAtkCfg")
+local NoramlRangeAtkCfg = require("GameLogics.Config.Spell.Common.NormalRangeAtkCfg")
 
 function Creature:ctor(sess, unitVO)
     ---@type BattleSession
@@ -13,7 +14,7 @@ function Creature:ctor(sess, unitVO)
     self.vo = unitVO
     self.camp = self.vo.camp
     self.uid = self.vo.uid
-    self.name = self.camp .. "_" .. self.vo.name .. "_" .. self.uid
+    self.name = self.camp .. "*" .. self.vo.name .. "_" .. self.uid
     self.eventMap = {}
     self:Init()
 end
@@ -28,6 +29,7 @@ function Creature:Init()
 
     -- base info
     self.hp = self.properties:GetProperty("hp")
+    self.alive = true
 
     -- attack storage [0,1] record the attack process
     self.attackStorage = 0
@@ -72,7 +74,7 @@ function Creature:Damage(value, source)
     self:Invoke("OnDamage")
     self.hp = math.max(0, self.hp - value)
     self:Invoke("OnHpChange")
-    if self.hp == 0 then
+    if self.hp == 0 and self.alive == true then
         self:Die()
     end
 end
@@ -80,6 +82,7 @@ end
 function Creature:Die()
     Debug.Log(self.name .. " Die")
     self.avatar:SwitchAction(Avatar.ActionType.Die)
+    self.alive = false
     self.sess.field:RemoveUnit(self)
     self.sess.map:TryRemoveUnit(self)
 end
@@ -93,7 +96,7 @@ function Creature:OnHpChange()
         unitVO.maxHp = self.properties:GetProperty("hp")
         unitVO.hp = self.hp
 
-        CS.MapManager.Instance:UpdateUnitState(self.uid,unitVO)
+        CS.MapManager.Instance:UpdateUnitState(self.uid, unitVO)
     end
 end
 
@@ -101,8 +104,7 @@ end
 
 function Creature:DoAttack(delta, target)
     local interval = self.properties:GetProperty("attackTime")
-    if self.sess.curTime < self.lastAttackTime + interval * (1 - self.properties:GetProperty("attackAnim")) then
-        -- interval isnt enough to make next attack
+    if not target.alive then
         self.attackStorage = 0
         return false
     end
@@ -111,6 +113,12 @@ function Creature:DoAttack(delta, target)
         self.attackStorage = 0
         return false
     end
+    if self.sess.curTime < self.lastAttackTime + interval * (1 - self.properties:GetProperty("attackAnim")) then
+        -- interval isnt enough to make next attack
+        self.attackStorage = 0
+        return true
+    end
+
     if self.attackStorage == 0 then
         -- start a new attack process
         self.atkTargetUid = target.uid
@@ -129,8 +137,10 @@ function Creature:DoAttack(delta, target)
     self.attackStorage = self.attackStorage + delta / interval
     if self.attackStorage >= self.properties:GetProperty("attackAnim") then
         -- make normal attack
+        Debug.Log(self.name.." make a normal attack")
+        local spell = self.vo.isRange==0 and NormalAtkCfg or NoramlRangeAtkCfg
         self.sess.field.spellExecutor:ExecuteSpell(
-            NormalAtkCfg,
+            spell,
             {
                 caster = self,
                 target = target,

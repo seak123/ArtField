@@ -41,7 +41,12 @@ function Ctrller:SwitchState(state)
 end
 
 function Ctrller:MoveToPos(pos)
-    return self.master.sess.map:UnitReqMove(self.master, pos)
+    local result,next = self.master.sess.map:UnitReqMove(self.master, pos)
+    if result then
+        local map = self.master.sess.map
+        self.master.avatar:TurnToPos(map:GetMapGridCenter(next.x,next.z))
+    end
+    return result
 end
 
 return Ctrller

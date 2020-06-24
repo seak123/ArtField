@@ -166,9 +166,9 @@ function BattleField:CheckBattleResult()
         -- no winner
         return 0
     elseif num1 <= 0 then
-        return 1
-    elseif num2 <= 0 then
         return 2
+    elseif num2 <= 0 then
+        return 1
     end
 end
 

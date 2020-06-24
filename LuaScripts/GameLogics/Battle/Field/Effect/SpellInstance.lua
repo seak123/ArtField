@@ -27,12 +27,19 @@ function Spell:Init()
     if SpellVO.hasBehaviour(self.behavior, SpellVO.SpellBehavior.Immediate) then
         self.state = Spell.States.Begin
     end
+
+    self.projectile = {
+        pos = {x = 0, z = 0},
+        state = "deactive",
+        speed = 0
+    }
+
     self:BindEvents()
 end
 
 function Spell:Update(delta)
     self:UpdateActions(delta)
-    self:CheckState()
+    self:CheckState(delta)
 end
 
 function Spell:RegisterEvent(name, handler)
@@ -69,16 +76,41 @@ function Spell:DoAction(actVO)
     table.insert(self.actions, node)
 end
 
-function Spell:Preparing()
+function Spell:Preparing(delta)
     -- do channel or projectile here
+    if SpellVO.hasBehaviour(self.behavior, SpellVO.SpellBehavior.Projectile) and self.projectile.state == "deactive" then
+        -- init projectile
+        self.projectile.state = "running"
+        local startPos = self.params.caster:GetPos()
+        local viewPos = self.sess.map:GetMapGridCenter(startPos.x, startPos.z)
+        self.projectile.pos = {x = viewPos.x, z = viewPos.z}
+        self.projectile.speed = self.vo.projectileSpeed
+    end
+
+    if self.projectile.state == "running" then
+        local viewPos = self.params.target.moveCtrl.viewPosition
+        local dist = Math.Vector2.distance(self.projectile.pos, viewPos)
+        local advance = self.projectile.speed * delta
+        -- Debug.Log("dandao dist:"..tostring(dist))
+        -- Debug.Log("advance :"..tostring(advance))
+        if advance > dist then
+            return true
+        end
+        local foward =
+            Math.Vector2.normalize({x = viewPos.x - self.projectile.pos.x, z = viewPos.z - self.projectile.pos.z})
+        self.projectile.pos.x = self.projectile.pos.x + foward.x * advance
+        self.projectile.pos.z = self.projectile.pos.z + foward.z * advance
+        self.projectile.speed = self.projectile.speed + delta * self.vo.projectileASpeed
+        return false
+    end
     return true
 end
 
-function Spell:CheckState()
+function Spell:CheckState(delta)
     if self.state == Spell.States.DeActive then
         self.state = Spell.States.Prepare
     elseif self.state == Spell.States.Prepare then
-        if self:Preparing() then
+        if self:Preparing(delta) then
             self.state = Spell.States.Begin
         end
     elseif self.state == Spell.States.Begin then

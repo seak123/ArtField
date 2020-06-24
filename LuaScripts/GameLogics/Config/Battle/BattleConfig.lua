@@ -35,13 +35,27 @@ this.UnitConfig = {
     [1] = {
         id = 1,
         name = "剑士",
-        speed = 10,
-        hp = 40,
+        speed = 6,
+        hp = 80,
         attack = 6,
-        attackTime = 1.2,
+        attackTime = 1.8,
         attackAnim = 0.1,
         attackRange = 1,
         rage = 50,
+        isRange = 0,
+        prefabPath = "Battle/Character/Modles/SwordShield/Prefab/SwordShield"
+    },
+    [2] = {
+        id = 1,
+        name = "弓手",
+        speed = 4,
+        hp = 55,
+        attack = 10,
+        attackTime = 1,
+        attackAnim = 0.1,
+        attackRange = 3,
+        rage = 50,
+        isRange = 1,
         prefabPath = "Battle/Character/Modles/SwordShield/Prefab/SwordShield"
     }
 }

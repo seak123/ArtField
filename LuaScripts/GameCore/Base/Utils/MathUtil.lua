@@ -43,4 +43,16 @@ this.bitNOT = function(n)
     return c
 end
 
+this.Vector2 = {
+    distance = function(a, b)
+        local d_x = a.x - b.x
+        local d_z = a.z - b.z
+        return math.sqrt(d_x * d_x + d_z * d_z)
+    end,
+    normalize = function(a)
+        local factor = math.sqrt(a.x * a.x + a.z * a.z)
+        return {x = a.x / factor, z = a.z / factor}
+    end
+}
+
 return this
