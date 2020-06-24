@@ -41,10 +41,17 @@ function MapMng:Init()
     self.height = self.vo.height
 
     self.moveTasks = {}
+    self.moveCache = {}
 end
 
 function MapMng:Update(delta)
     self:UpdateMoveTasks(delta)
+    if not SystemConst.logicMode then
+        for i = 1, #self.moveCache do
+            CS.MapManager.Instance:UpdateUnit(self.moveCache[i].uid, self.moveCache[i].x, self.moveCache[i].z)
+        end
+    end
+    self.moveCache = {}
 end
 
 -------------- map base function ------------
@@ -290,6 +297,7 @@ end
 
 function MapMng:UpdateUnitPos(unit)
     local nowPos = self:GetMapGridByView(unit.moveCtrl.viewPosition.x, unit.moveCtrl.viewPosition.z)
+    table.insert(self.moveCache, {uid = unit.uid, x = unit.moveCtrl.viewPosition.x, z = unit.moveCtrl.viewPosition.z})
     if nowPos.x == unit.moveCtrl.position.x and nowPos.z == unit.moveCtrl.position.z then
         return
     end

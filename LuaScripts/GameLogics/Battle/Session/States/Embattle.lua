@@ -34,7 +34,7 @@ function EmbattleState:Update()
 end
 
 function EmbattleState:Leave()
-    self.sess.field.cardExcutor.cardPanelLb:SetBtnCallback(nil)
+    self.sess.field.cardExecutor.cardPanelLb:SetBtnCallback(nil)
 end
 
 return EmbattleState

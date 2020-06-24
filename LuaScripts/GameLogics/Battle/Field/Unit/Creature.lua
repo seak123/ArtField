@@ -13,7 +13,7 @@ function Creature:ctor(sess, unitVO)
     self.vo = unitVO
     self.camp = self.vo.camp
     self.uid = self.vo.uid
-    self.name = self.camp.."_"..self.vo.name.."_"..self.uid
+    self.name = self.camp .. "_" .. self.vo.name .. "_" .. self.uid
     self.eventMap = {}
     self:Init()
 end
@@ -70,15 +70,16 @@ end
 
 function Creature:Damage(value, source)
     self:Invoke("OnDamage")
-    self:Invoke("OnHpChange")
     self.hp = math.max(0, self.hp - value)
+    self:Invoke("OnHpChange")
     if self.hp == 0 then
         self:Die()
     end
 end
 
 function Creature:Die()
-    Debug.Log(self.name.." Die")
+    Debug.Log(self.name .. " Die")
+    self.avatar:SwitchAction(Avatar.ActionType.Die)
     self.sess.field:RemoveUnit(self)
     self.sess.map:TryRemoveUnit(self)
 end
@@ -86,6 +87,14 @@ end
 ------------------- event -------------------------------
 function Creature:OnHpChange()
     -- TODO notify lifeslider change
+    if not SystemConst.logicMode then
+        local unitVO = self.vo
+
+        unitVO.maxHp = self.properties:GetProperty("hp")
+        unitVO.hp = self.hp
+
+        CS.MapManager.Instance:UpdateUnitState(self.uid,unitVO)
+    end
 end
 
 ------------------- logic function -----------------------

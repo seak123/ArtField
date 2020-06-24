@@ -2,11 +2,11 @@
 local Avatar = class("Avatar")
 
 Avatar.ActionType = {
-    Idle = 0,
-    Walk = 1,
-    Attack = 2,
-    Caster = 3,
-    Die = 4
+    Idle = "Idle",
+    Walk = "Walk",
+    Attack = "Attack",
+    Caster = "Caster",
+    Die = "Die"
 }
 
 function Avatar:ctor(master)
@@ -18,12 +18,14 @@ end
 
 function Avatar:Init()
     --- create avatar
-    self.model =
-        CS.LuaCallCSUtils.CreateUnit(
+    CS.LuaCallCSUtils.CreateUnit(
         self.master.uid,
         self.master.vo,
         self.master.moveCtrl.position.x,
-        self.master.moveCtrl.position.z
+        self.master.moveCtrl.position.z,
+        function(avatar)
+            self.avatar = avatar
+        end
     )
     self.curState = Avatar.ActionType.Idle
     self:SwitchAction(Avatar.ActionType.Idle)
@@ -40,15 +42,17 @@ function Avatar:SwitchAction(type)
     if SystemConst.logicMode then
         return
     end
-    local animator = self:GetAnimator()
-    if nil == animator then
-        return
-    end
 
     if type == self.curState then
         -- replay current action
+        if self.avatar ~= nil then
+            self.avatar:PlayAnimation(type)
+        end
     else
         -- switch to new action
+        if self.avatar ~= nil then
+            self.avatar:PlayAnimation(type)
+        end
     end
 end
 ---@param target Creature
@@ -56,11 +60,15 @@ function Avatar:TurnToTarget(target)
     if SystemConst.logicMode then
         return
     end
+    self:TurnToPos(self.master.sess.map:GetMapGridCenter(target:GetPos().x, target:GetPos().z))
 end
 ---@param pos viewPos
 function Avatar:TurnToPos(pos)
     if SystemConst.logicMode then
         return
+    end
+    if self.avatar ~= nil then
+        self.avatar:TurnToPos(pos.x, pos.z)
     end
 end
 
