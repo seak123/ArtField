@@ -3,16 +3,16 @@ local base = require("GameLogics.Battle.AI.Selectors.BaseSelector")
 local Sequence = class("SequenceSelector", base)
 local BT = require("GameLogics.Battle.AI.BehaviourTree")
 
-function Sequence:ctor(tree)
+function Sequence:ctor(tree,vo)
     self.actions = nil
     self.running = false
-    self.lastIndex = 0
+    self.lastIndex = 1
     self.tree = tree
 end
 
 function Sequence:CleanUp()
     self.running = false
-    self.lastIndex = 0
+    self.lastIndex = 1
 end
 
 -- 顺序执行

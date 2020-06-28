@@ -1,5 +1,6 @@
 require("GameCore.Main.MainProcedure")
-local socket = require("socket")
+
+SystemConst.logicMode = true
 
 local beginTime = os.time()
 local costTick = function()

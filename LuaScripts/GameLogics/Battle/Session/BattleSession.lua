@@ -49,7 +49,7 @@ function BattleSession:Init()
 
     self.fsm:Switch2State(FSM.SessionType.PreBattle)
 
-    EventManager:On(EventConst.ON_SCHEDULER_UPDATE, self.Update, self)
+    self.handler = EventManager:On(EventConst.ON_SCHEDULER_UPDATE, self.Update, self)
 end
 
 function BattleSession:Update(delta)
@@ -61,6 +61,10 @@ function BattleSession:Update(delta)
 end
 
 function BattleSession:CleanUp()
+    EventManager:Off(EventConst.ON_SCHEDULER_UPDATE, self.handler)
+    if not SystemConst.logicMode then
+        CS.BattleManager.Instance:LeaveBattle()
+    end
 end
 
 function BattleSession:CurrentState()

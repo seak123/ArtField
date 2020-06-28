@@ -113,6 +113,13 @@ function MapMng:IsGridValid(x, z)
     return x >= 0 and x < self.width and z >= 0 and z < self.height
 end
 
+function MapMng:GetMoveTask(uid)
+    if self.moveTasks[uid] ~= nil then
+        return self.moveTasks[uid]
+    end
+    return nil
+end
+
 -- a* find a path of source->target, and return the next point in this path
 ---@param offset int 允许目的点距离target的偏离范围
 function MapMng:AStar(source, target, offset)
@@ -284,6 +291,11 @@ function MapMng:TryRemoveUnit(unit)
     if task ~= nil then
         self:GetMapGridInfo(task.goal.x, task.goal.z).state = self.GridState.Empty
         self.moveTasks[unit.uid] = nil
+    end
+
+    -- clear view
+    if not SystemConst.logicMode then
+        CS.MapManager.Instance:RemoveUnit(unit.uid,2)
     end
 end
 

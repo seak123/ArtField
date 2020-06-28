@@ -8,6 +8,7 @@ local Creature = require("GameLogics.Battle.Field.Unit.Creature")
 local EventConst = require("GameCore.Constant.EventConst")
 local CardExecutor = require("GameLogics.Battle.Field.Card.CardExecutor")
 local SpellExecutor = require("GameLogics.Battle.Field.Effect.SpellExecutor")
+local EffectManager = require("GameLogics.Battle.Field.Effect.EffectManager")
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
 
 function BattleField:ctor(sess)
@@ -31,6 +32,7 @@ function BattleField:Init()
 
     self.cardExecutor = CardExecutor.new(self.sess)
     self.spellExecutor = SpellExecutor.new(self.sess)
+    self.effectManager = EffectManager.new(self.sess)
 
     self:Register()
 end

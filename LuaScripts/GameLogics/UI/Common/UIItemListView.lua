@@ -80,6 +80,10 @@ function UIItemListView:RefreshView()
 
             index = index + 1
         end
+        -- init content
+        local size = self.ScrollView.content.sizeDelta.x;
+        self.ScrollView.content.sizeDelta.x = self.itemSize*index
+        local size = self.ScrollView.content.sizeDelta.x;
     end
 end
 

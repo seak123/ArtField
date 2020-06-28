@@ -29,6 +29,7 @@ function Spell:Init()
     end
 
     self.projectile = {
+        effectUid = -1,
         pos = {x = 0, z = 0},
         state = "deactive",
         speed = 0
@@ -85,6 +86,8 @@ function Spell:Preparing(delta)
         local viewPos = self.sess.map:GetMapGridCenter(startPos.x, startPos.z)
         self.projectile.pos = {x = viewPos.x, z = viewPos.z}
         self.projectile.speed = self.vo.projectileSpeed
+        -- create effect
+        self.projectile.effectUid = self.sess.field.effectManager:CreateEffect(self.vo.projectileId,self.params.caster.uid,self.params.target.uid)
     end
 
     if self.projectile.state == "running" then

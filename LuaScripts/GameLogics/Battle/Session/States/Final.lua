@@ -15,7 +15,10 @@ end
 
 function FinalState:Enter()
     -- clear session
-    BattleManager:ExitBattle()
+    --BattleManager:ExitBattle()
+    if not SystemConst.logicMode then
+        CS.WindowsUtil.AddWindow("Battle/UI_Final", CS.UILayer.MainLayer_0)
+    end
 end
 
 function FinalState:Update()

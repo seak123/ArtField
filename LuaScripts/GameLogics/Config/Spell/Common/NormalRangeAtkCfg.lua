@@ -14,7 +14,7 @@ this.events = {
         }
     }
 }
-this.projectileSpeed = 5
-this.projectileASpeed = 2
+this.projectileSpeed = 16
+this.projectileASpeed = 5
 
 return this

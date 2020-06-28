@@ -18,12 +18,20 @@ function ConfigManager:GetCardConfig(cardId)
     return cardVO
 end
 
+function ConfigManager:GetEffectConfig(effectId)
+    return clone(CardConfig.Effects[effectId])
+end
+
 function ConfigManager:GetSpellConfig(spellId)
-    return CardConfig.CardSpells[spellId]
+    return clone(CardConfig.CardSpells[spellId])
 end
 
 function ConfigManager:GetUnitConfig(unitId)
-    return CardConfig.UnitConfig[unitId]
+    return clone(CardConfig.UnitConfig[unitId])
+end
+
+function ConfigManager:GetAIConfig(id)
+    return clone(CardConfig.AIConfig[id])
 end
 
 return ConfigManager

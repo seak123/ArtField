@@ -29,6 +29,7 @@ function Creature:Init()
 
     -- base info
     self.hp = self.properties:GetProperty("hp")
+    self.ap = 0
     self.alive = true
 
     -- attack storage [0,1] record the attack process
@@ -47,6 +48,15 @@ end
 
 function Creature:GetPos()
     --Debug.Log("get pos",tostring(self.moveCtrl.position.x),tostring(self.moveCtrl.position.z))
+    return self.moveCtrl.position
+end
+
+-- the next pos after moving
+function Creature:GetNextPos()
+    local task = self.sess.map:GetMoveTask(self.uid)
+    if task then
+        return task.goal
+    end
     return self.moveCtrl.position
 end
 
@@ -73,10 +83,16 @@ end
 function Creature:Damage(value, source)
     self:Invoke("OnDamage")
     self.hp = math.max(0, self.hp - value)
+    -- ap
+    self.ap = self.ap + value
+    self.ap = math.min(self.ap,self.properties:GetProperty("rage"))
+    
     self:Invoke("OnHpChange")
     if self.hp == 0 and self.alive == true then
         self:Die()
     end
+
+    
 end
 
 function Creature:Die()
@@ -95,6 +111,7 @@ function Creature:OnHpChange()
 
         unitVO.maxHp = self.properties:GetProperty("hp")
         unitVO.hp = self.hp
+        unitVO.ap = self.ap
 
         CS.MapManager.Instance:UpdateUnitState(self.uid, unitVO)
     end
@@ -139,6 +156,9 @@ function Creature:DoAttack(delta, target)
         -- make normal attack
         Debug.Log(self.name.." make a normal attack")
         local spell = self.vo.isRange==0 and NormalAtkCfg or NoramlRangeAtkCfg
+        spell.projectileId = self.vo.projectileId
+        spell.projectileSpeed = self.vo.projectileSpeed
+        spell.projectileASpeed = self.vo.projectileASpeed
         self.sess.field.spellExecutor:ExecuteSpell(
             spell,
             {

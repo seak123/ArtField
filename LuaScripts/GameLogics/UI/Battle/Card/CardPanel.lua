@@ -68,6 +68,7 @@ end
 function CardPanel:OnClickButton()
     if self.btnCallback ~= nil then
         self.btnCallback()
+        CS.WindowsUtil.RemoveWindow(self._target)
     end
 end
 

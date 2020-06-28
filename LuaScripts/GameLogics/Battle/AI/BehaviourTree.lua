@@ -7,64 +7,11 @@ Tree.NodeState = {
     Fail = 2
 }
 
-local exampleData = {
-    root = {
-        feature = "Selector",
-        type = "Single",
-        vo = {
-            selectType = "Default"
-        },
-        actions = {
-            {
-                feature = "Action",
-                type = "Wait",
-                decorators = {
-                    {
-                        feature = "Decorator",
-                        type = "SeekTarget",
-                        vo = {
-                            seekType = "NearestEnemy"
-                        }
-                    }
-                },
-                vo = {}
-            },
-            {
-                feature = "Action",
-                type = "Attack",
-                decorators = {
-                    {
-                        feature = "Decorator",
-                        type = "SeekTarget",
-                        vo = {
-                            seekType = "NearestEnemy"
-                        }
-                    }
-                },
-                vo = {}
-            },
-            {
-                feature = "Action",
-                type = "Move",
-                decorators = {
-                    {
-                        feature = "Decorator",
-                        type = "SeekTarget",
-                        vo = {
-                            seekType = "NearestEnemy"
-                        }
-                    }
-                },
-                vo = {}
-            }
-        }
-    }
-}
 
 function Tree:ctor(master)
     self.master = master
     self.root = nil
-    self:Init(exampleData.root)
+    self:Init(ConfigManager:GetAIConfig(self.master.vo.AI).root)
 end
 
 function Tree:Init(treeData)
