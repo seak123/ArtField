@@ -59,7 +59,7 @@ this.UnitConfig = {
         AI = 1 -- AI
     },
     [2] = {
-        id = 1,
+        id = 2,
         name = "弓手",
         speed = 6.5,
         hp = 55,
@@ -76,7 +76,7 @@ this.UnitConfig = {
         projectileId = 1 -- 弹道特效id
     },
     [3] = {
-        id = 1,
+        id = 3,
         name = "法师",
         speed = 5.5,
         hp = 45,
@@ -93,7 +93,7 @@ this.UnitConfig = {
         projectileId = 1 -- 弹道特效id
     },
     [4] = {
-        id = 1,
+        id = 4,
         name = "刺客",
         speed = 12.5,
         hp = 45,

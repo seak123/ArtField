@@ -5,6 +5,7 @@ local Properties = require("GameLogics.Battle.Field.Unit.Components.Properties")
 local Avatar = require("GameLogics.Battle.Field.Unit.Components.Avatar")
 local Brain = require("GameLogics.Battle.Field.Unit.Components.ArtiBrain")
 local MoveCtrl = require("GameLogics.Battle.Field.Unit.Components.MoveController")
+local Condition = require("GameLogics.Battle.Field.Unit.Components.ConditionController")
 local NormalAtkCfg = require("GameLogics.Config.Spell.Common.NormalAtkCfg")
 local NoramlRangeAtkCfg = require("GameLogics.Config.Spell.Common.NormalRangeAtkCfg")
 
@@ -26,6 +27,7 @@ function Creature:Init()
     self.properties = Properties.new(self)
     self.avatar = Avatar.new(self)
     self.brain = Brain.new(self)
+    self.condition = Condition.new(self)
 
     -- base info
     self.hp = self.properties:GetProperty("hp")

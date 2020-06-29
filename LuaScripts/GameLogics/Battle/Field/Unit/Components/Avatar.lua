@@ -72,5 +72,15 @@ function Avatar:TurnToPos(pos)
     end
 end
 
+function Avatar:SwitchStealth(open)
+    if SystemConst.logicMode then
+        return
+    end
+    if self.avatar ~= nil then
+        if self.master.vo.id == 4 then
+            self.avatar:SetAvatarFade(open, 0.25)
+        end
+    end
+end
 
 return Avatar
