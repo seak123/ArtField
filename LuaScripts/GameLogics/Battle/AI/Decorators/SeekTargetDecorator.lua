@@ -1,5 +1,6 @@
 ---@class SeekTargetDecorator
 local SeekTarget = class("SeekTargetDecorator")
+local Condition = require("GameLogics.Battle.Field.Unit.Components.ConditionController")
 
 SeekTarget.SeekType = {
     NearestEnemy = "NearestEnemy",
@@ -30,6 +31,10 @@ function SeekTarget:NearestEnemyFinder()
     local nearstUnit = nil
     local searchFunc = function(unit)
         if unit.camp == 3 - master.camp then
+            if unit.condition:hasState(Condition.StateType.Steal) then
+                --有隐身状态则跳过
+                return
+            end
             local dist = map:GetDist(master:GetPos(), unit:GetPos())
             if dist < nearstDist then
                 nearstDist = dist
@@ -57,6 +62,10 @@ function SeekTarget:FarthestEnemyFinder()
     local farthstUnit = nil
     local searchFunc = function(unit)
         if unit.camp == 3 - master.camp then
+            if unit.condition:hasState(Condition.StateType.Steal) then
+                --有隐身状态则跳过
+                return
+            end
             local dist = map:GetDist(master:GetPos(), unit:GetPos())
             if dist > farthstDist then
                 farthstDist = dist

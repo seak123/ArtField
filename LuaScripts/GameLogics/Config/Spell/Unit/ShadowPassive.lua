@@ -8,8 +8,9 @@ this.events = {
         actions = {
             {
                 type = "BuffSp",
+                name = "伺机待发",
                 duration = 2,
-                Owner = "Caster",
+                owner = "Caster",
                 features = {
                     {
                         type = "Condition",

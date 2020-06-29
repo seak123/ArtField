@@ -23,10 +23,14 @@ local function loadUnits(data)
 end
 
 local testData = {
-    {unitId = 1, x = 0, z = 0, camp = 1},
+    {unitId = 1, x = 3, z = 6, camp = 1},
     {unitId = 2, x = 5, z = 5, camp = 2},
     {unitId = 1, x = 0, z = 1, camp = 1},
     {unitId = 1, x = 2, z = 2, camp = 2},
+    {unitId = 3, x = 0, z = 2, camp = 1},
+    {unitId = 3, x = 4, z = 2, camp = 2},
+    {unitId = 4, x = 0, z = 3, camp = 1},
+    {unitId = 4, x = 3, z = 7, camp = 2},
 }
 
 loadUnits(testData)

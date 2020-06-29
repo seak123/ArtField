@@ -46,7 +46,6 @@ function Wait:Execute(delta)
             local pos = self.tree.master:GetPos()
             local range = self.tree.master.sess.map:GetRangeDist(targetPos, pos)
             if range <= self.tree.master.properties:GetProperty("attackRange") then
-                Debug.Warn("waiting")
                 self.tree.master.avatar:TurnToPos(self.tree.master.sess.map:GetMapGridCenter(targetPos.x, targetPos.z))
                 return BT.NodeState.Success
             end

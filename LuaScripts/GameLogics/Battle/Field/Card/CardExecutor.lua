@@ -51,7 +51,7 @@ end
 -------------------------------   card logic ------------------------------
 
 function CardExecutor:ExecuteCard(camp, cardVO, param)
-    local spellCfg = ConfigManager:GetSpellConfig(cardVO.id)
+    local spellCfg = ConfigManager:GetCardSpellConfig(cardVO.id)
     local targetParams = {
         caster = {camp = camp},
         target = nil,

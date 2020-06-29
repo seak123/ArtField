@@ -4,9 +4,8 @@
 ]]
 local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class FinalState
-local FinalState = class("FinalState",BaseState)
+local FinalState = class("FinalState", BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
-
 
 function FinalState:ctor(sess)
     self.sess = sess
@@ -14,10 +13,11 @@ function FinalState:ctor(sess)
 end
 
 function FinalState:Enter()
-    -- clear session
-    --BattleManager:ExitBattle()
     if not SystemConst.logicMode then
         CS.WindowsUtil.AddWindow("Battle/UI_Final", CS.UILayer.MainLayer_0)
+    else
+        -- clear session
+        BattleManager:ExitBattle()
     end
 end
 

@@ -22,12 +22,16 @@ function ConfigManager:GetEffectConfig(effectId)
     return clone(CardConfig.Effects[effectId])
 end
 
-function ConfigManager:GetSpellConfig(spellId)
+function ConfigManager:GetCardSpellConfig(spellId)
     return clone(CardConfig.CardSpells[spellId])
 end
 
 function ConfigManager:GetUnitConfig(unitId)
     return clone(CardConfig.UnitConfig[unitId])
+end
+
+function ConfigManager:GetSpellConfig(spellId)
+    return clone(CardConfig.UnitSpells[spellId])
 end
 
 function ConfigManager:GetAIConfig(id)

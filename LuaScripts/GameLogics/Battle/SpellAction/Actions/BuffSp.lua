@@ -4,34 +4,30 @@ local Buff = class("BuffSp", base)
 
 Buff.Features = {
     Condition = "Condition",
+    Property = "Property"
 }
 
-Damage.DamageFeature = {
-    Physic = "Physic",
-    Magic = "Magic",
-    Real = "Real"
-}
 
 ---@param sess BattleSession
 ---@param vo DamageVO
-function Damage:ctor(sess, vo, params)
+function Buff:ctor(sess, vo, params)
     self.sess = sess
     self.vo = vo
     self.params = params
 end
 
-function Damage:Update(delta)
+function Buff:Update(delta)
     ---@type Creature
     local caster = self.params.caster
     local target = self.params.target
-    local value
-    if self.vo.damageType == "Normal" then
-        value = caster.properties:GetProperty("attack")
-    end
-    value = Math.damageCal(value,self.vo.damageFeature)
-    Debug.Log(caster.name.." make attack on "..target.name.." <"..value.."> damage")
-    target:Damage(value,caster)
+    local buffVO = {
+        name = self.vo.name,
+        duration = self.vo.duration,
+        features = self.vo.features
+    }
+    local owner = self.vo.owner == "Caster" and caster or target
+    owner.buffMng:AddBuff(buffVO)
     return true
 end
 
-return Damage
+return Buff

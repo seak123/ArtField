@@ -31,6 +31,10 @@ this.CardSpells = {
     [3] = SpawnHero.new(3),
     [4] = SpawnHero.new(4)
 }
+
+this.UnitSpells = {
+    [1] = {path = "GameLogics.Config.Spell.Unit.ShadowPassive"}
+}
 ---@class UnitVO
 local UnitVO = {
     id = 0,
@@ -104,7 +108,8 @@ this.UnitConfig = {
         rage = 50, --怒气上限
         isRange = 0, --是否远程
         prefabPath = "Battle/Character/Modles/Shadow/Prefab/Shadow", --模型路径
-        AI = 3 -- AI
+        AI = 3, -- AI
+        passiveSp = {1} -- 被动技能
     }
 }
 --- AI 配置
@@ -206,7 +211,7 @@ this.AIConfig = {
                             feature = "Decorator",
                             type = "SeekTarget",
                             vo = {
-                                seekType = "FarthestEnemy"
+                                seekType = "NearestEnemy"
                             }
                         }
                     },
@@ -230,8 +235,30 @@ this.AIConfig = {
                                         seekType = "FarthestEnemy"
                                     }
                                 },
-                                vo = {}
-                            }
+                                {
+                                    feature = "Decorator",
+                                    type = "AroundUnits",
+                                    vo = {
+                                        findType = "Enemy",
+                                        needCount = 1
+                                    }
+                                }
+                            },
+                            vo = {}
+                        },
+                        {
+                            feature = "Action",
+                            type = "Attack",
+                            decorators = {
+                                {
+                                    feature = "Decorator",
+                                    type = "SeekTarget",
+                                    vo = {
+                                        seekType = "NearestEnemy"
+                                    }
+                                }
+                            },
+                            vo = {}
                         },
                         {
                             feature = "Action",
@@ -291,7 +318,7 @@ this.AIConfig = {
                         }
                     },
                     vo = {
-                        delay = 2,
+                        delay = 2
                     }
                 },
                 {

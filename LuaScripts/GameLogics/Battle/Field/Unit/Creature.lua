@@ -6,6 +6,7 @@ local Avatar = require("GameLogics.Battle.Field.Unit.Components.Avatar")
 local Brain = require("GameLogics.Battle.Field.Unit.Components.ArtiBrain")
 local MoveCtrl = require("GameLogics.Battle.Field.Unit.Components.MoveController")
 local Condition = require("GameLogics.Battle.Field.Unit.Components.ConditionController")
+local BuffMng = require("GameLogics.Battle.Field.Unit.Components.BuffManager")
 local NormalAtkCfg = require("GameLogics.Config.Spell.Common.NormalAtkCfg")
 local NoramlRangeAtkCfg = require("GameLogics.Config.Spell.Common.NormalRangeAtkCfg")
 
@@ -28,6 +29,7 @@ function Creature:Init()
     self.avatar = Avatar.new(self)
     self.brain = Brain.new(self)
     self.condition = Condition.new(self)
+    self.buffMng = BuffMng.new(self)
 
     -- base info
     self.hp = self.properties:GetProperty("hp")
@@ -39,6 +41,21 @@ function Creature:Init()
     self.lastAttackTime = 0
     self.atkTargetUid = 0
 
+    -- init passive spell
+    if self.vo.passiveSp ~= nil and #self.vo.passiveSp > 0 then
+        for i = 1,  #self.vo.passiveSp do
+            local spell = require(ConfigManager:GetSpellConfig(self.vo.passiveSp[i]).path)
+            self.sess.field.spellExecutor:ExecuteSpell(
+            spell,
+            {
+                caster = self,
+                target = nil,
+                point = {x = 0, z = 0}
+            }
+        )
+        end 
+    end
+
     -- bind events
     self:RegisterEvent("OnHpChange", Handle:new(self.OnHpChange, self))
 end
@@ -46,6 +63,7 @@ end
 function Creature:Update(delta)
     self.brain:Update(delta)
     self.moveCtrl:Update(delta)
+    self.buffMng:Update(delta)
 end
 
 function Creature:GetPos()
@@ -87,14 +105,12 @@ function Creature:Damage(value, source)
     self.hp = math.max(0, self.hp - value)
     -- ap
     self.ap = self.ap + value
-    self.ap = math.min(self.ap,self.properties:GetProperty("rage"))
-    
+    self.ap = math.min(self.ap, self.properties:GetProperty("rage"))
+
     self:Invoke("OnHpChange")
     if self.hp == 0 and self.alive == true then
         self:Die()
     end
-
-    
 end
 
 function Creature:Die()
@@ -103,6 +119,10 @@ function Creature:Die()
     self.alive = false
     self.sess.field:RemoveUnit(self)
     self.sess.map:TryRemoveUnit(self)
+end
+
+function Creature:CleanUp()
+    self.buffMng:CleanUp()
 end
 
 ------------------- event -------------------------------
@@ -156,8 +176,8 @@ function Creature:DoAttack(delta, target)
     self.attackStorage = self.attackStorage + delta / interval
     if self.attackStorage >= self.properties:GetProperty("attackAnim") then
         -- make normal attack
-        Debug.Log(self.name.." make a normal attack")
-        local spell = self.vo.isRange==0 and NormalAtkCfg or NoramlRangeAtkCfg
+        Debug.Log(self.name .. " make a normal attack")
+        local spell = self.vo.isRange == 0 and NormalAtkCfg or NoramlRangeAtkCfg
         spell.projectileId = self.vo.projectileId
         spell.projectileSpeed = self.vo.projectileSpeed
         spell.projectileASpeed = self.vo.projectileASpeed
