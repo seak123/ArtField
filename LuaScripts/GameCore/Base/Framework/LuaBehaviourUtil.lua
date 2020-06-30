@@ -120,21 +120,24 @@ function LuaBehaviourUtil.BindEvents(lb)
     for i = 1, #events do
         local info = events[i]
         local func = lb[info.Handler]
-        if func ~= nil then
-            table.insert(lb._events, {name = info.Name, handler = EventManager:On(info.Name, func, lb)})
-        end
+        EventManager:On(info.Name, func, lb)
+        -- if func ~= nil then
+        --     table.insert(lb._events, {name = info.Name, handler = EventManager:On(info.Name, func, lb)})
+        -- end
     end
 end
 
 function LuaBehaviourUtil.UnBindEvents(lb)
-    local events = lb._events
+    local events = lb._setting.Events
 
     if events == nil then
         return
     end
 
     for i, event in ipairs(events) do
-        EventManager:Off(event.name, event.handler)
+        local info = events[i]
+        local func = lb[info.Handler]
+        EventManager:Off(info.Name, func, lb)
     end
 end
 
