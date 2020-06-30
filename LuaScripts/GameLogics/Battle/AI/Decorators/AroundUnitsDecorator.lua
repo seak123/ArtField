@@ -2,18 +2,18 @@
 local AroundUnits = class("AroundUnitsDecorator")
 local Condition = require("GameLogics.Battle.Field.Unit.Components.ConditionController")
 
-
 AroundUnits.findType = {
     Enemy = "Enemy",
     Friend = "Friend",
     EveryBody = "EveryBody"
 }
 
-
-function AroundUnits:ctor(parent,vo)
+function AroundUnits:ctor(parent, vo)
     self.parent = parent
     self.findType = vo.findType
-    self.needCount = vo.needCount and vo.needCount or 0
+    self.minCount = vo.minCount and vo.minCount or 0
+    self.maxCount = vo.maxCount and vo.maxCount or 999
+    self.aroundRange = vo.aroundRange and vo.aroundRange or 1
 end
 
 function AroundUnits:Execute()
@@ -47,11 +47,14 @@ function AroundUnits:AroundFinder()
                 --有隐身状态则跳过
                 return
             end
-            count = count + 1
+            local dist = map:GetRangeDist(master:GetPos(), unit:GetPos())
+            if dist <= self.aroundRange then
+                count = count + 1
+            end
         end
     end
     field:UnitForeach(searchFunc)
-    if count >= self.needCount then
+    if count >= self.minCount and count <= self.maxCount then
         return true
     else
         --cannot find enough target

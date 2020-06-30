@@ -1,6 +1,7 @@
 ---@class Creature
 local Creature = class("Creature")
 local Event = require("GameCore.Base.Event.Event")
+local EventConst = require("GameCore.Constant.EventConst")
 local Properties = require("GameLogics.Battle.Field.Unit.Components.Properties")
 local Avatar = require("GameLogics.Battle.Field.Unit.Components.Avatar")
 local Brain = require("GameLogics.Battle.Field.Unit.Components.ArtiBrain")
@@ -41,22 +42,9 @@ function Creature:Init()
     self.lastAttackTime = 0
     self.atkTargetUid = 0
 
-    -- init passive spell
-    if self.vo.passiveSp ~= nil and #self.vo.passiveSp > 0 then
-        for i = 1,  #self.vo.passiveSp do
-            local spell = require(ConfigManager:GetSpellConfig(self.vo.passiveSp[i]).path)
-            self.sess.field.spellExecutor:ExecuteSpell(
-            spell,
-            {
-                caster = self,
-                target = nil,
-                point = {x = 0, z = 0}
-            }
-        )
-        end 
-    end
-
-    -- bind events
+    -- register event
+    EventManager:AddListener(EventConst.ON_ENTER_ACTION, Handle:new(self.OnEnterAction, self))
+    -- bind object events
     self:RegisterEvent("OnHpChange", Handle:new(self.OnHpChange, self))
 end
 
@@ -136,6 +124,23 @@ function Creature:OnHpChange()
         unitVO.ap = self.ap
 
         CS.MapManager.Instance:UpdateUnitState(self.uid, unitVO)
+    end
+end
+
+function Creature:OnEnterAction()
+    -- init passive spell
+    if self.vo.passiveSp ~= nil and #self.vo.passiveSp > 0 then
+        for i = 1, #self.vo.passiveSp do
+            local spell = require(ConfigManager:GetSpellConfig(self.vo.passiveSp[i]).path)
+            self.sess.field.spellExecutor:ExecuteSpell(
+                spell,
+                {
+                    caster = self,
+                    target = nil,
+                    point = {x = 0, z = 0}
+                }
+            )
+        end
     end
 end
 

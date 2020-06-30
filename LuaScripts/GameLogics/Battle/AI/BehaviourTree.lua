@@ -38,6 +38,12 @@ function Tree:ParaseData(data, parentNode)
             table.insert(newNode.decorators, self:ParaseData(data.decorators[i], newNode))
         end
     end
+    if data.interpDecorators ~= nil and #data.interpDecorators > 0 then
+        newNode.interpDecorators = {}
+        for i = 1, #data.interpDecorators do
+            table.insert(newNode.interpDecorators, self:ParaseData(data.interpDecorators[i], newNode))
+        end
+    end
     return newNode
 end
 

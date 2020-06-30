@@ -78,7 +78,7 @@ function Avatar:SwitchStealth(open)
     end
     if self.avatar ~= nil then
         if self.master.vo.id == 4 then
-            self.avatar:SetAvatarFade(open, 0.25)
+            self.avatar:SetAvatarFade(open, 0.1)
         end
     end
 end

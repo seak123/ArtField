@@ -9,12 +9,23 @@ end
 function BaseAction:ExDecorator()
     if self.decorators ~= nil then
         for i = 1, #self.decorators do
-            if self.decorators[i]:Execute() == BT.NodeState.Fail then
-                return BT.NodeState.Fail
+            if self.decorators[i]:Execute() == false then
+                return false
             end
         end
     end
-    return BT.NodeState.Success
+    return true
+end
+
+function BaseAction:ExInterpDecorator()
+    if self.interpDecorators ~= nil then
+        for i = 1, #self.interpDecorators do
+            if self.interpDecorators[i]:Execute() == true then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 function BaseAction:Execute()

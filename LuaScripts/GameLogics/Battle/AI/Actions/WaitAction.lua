@@ -27,7 +27,7 @@ end
 function Wait:Execute(delta)
     if self.running == false then
         -- On enter, execute decorators firstly
-        if self:ExDecorator() == BT.NodeState.Fail then
+        if self:ExDecorator() == false then
             return BT.NodeState.Fail
         end
         self.timing = 0

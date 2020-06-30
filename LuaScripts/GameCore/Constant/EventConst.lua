@@ -3,6 +3,8 @@ local EventConst = {}
 -- BattleState
 EventConst.ON_BEGIN_BATTLE = "ON_BEGIN_BATTLE" --游戏开始
 
+EventConst.ON_ENTER_ACTION = "ON_ENTER_ACTION" --进入战斗
+
 -- Card
 EventConst.ON_CARD_CHANGE = "ON_CARD_CHANGE"
 

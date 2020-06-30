@@ -18,7 +18,11 @@ end
 function Atk:Execute(delta)
     if self.running == false then
         -- On enter, execute decorators firstly
-        if self:ExDecorator() == BT.NodeState.Fail then
+        if self:ExDecorator() == false then
+            return BT.NodeState.Fail
+        end
+    else 
+        if self:ExInterpDecorator() == true then
             return BT.NodeState.Fail
         end
     end
@@ -32,6 +36,7 @@ function Atk:Execute(delta)
             return BT.NodeState.Fail
         end
         if self.tree.master:DoAttack(delta,target) then
+            self.running = true
             return BT.NodeState.Running
         else
             return BT.NodeState.Fail

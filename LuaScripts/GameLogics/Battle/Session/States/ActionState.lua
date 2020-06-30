@@ -6,6 +6,7 @@ local BaseState = require("GameLogics.Battle.Session.States.BaseState")
 ---@class ActionState:BaseState
 local ActionState = class("ActionState",BaseState)
 local FSM = require("GameLogics.Battle.Session.SessionFSM")
+local EventConst = require("GameCore.Constant.EventConst")
 
 ---@param sess BattleSession
 function ActionState:ctor(sess)
@@ -15,6 +16,7 @@ end
 
 function ActionState:Enter()
     --self.next = FSM.SessionType.Embattle
+    EventManager:Emit(EventConst.ON_ENTER_ACTION)
 end
 
 function ActionState:Update()

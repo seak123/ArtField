@@ -232,7 +232,7 @@ this.AIConfig = {
                                     feature = "Decorator",
                                     type = "SeekTarget",
                                     vo = {
-                                        seekType = "FarthestEnemy"
+                                        seekType = "NearestEnemy"
                                     }
                                 },
                                 {
@@ -240,7 +240,19 @@ this.AIConfig = {
                                     type = "AroundUnits",
                                     vo = {
                                         findType = "Enemy",
-                                        needCount = 1
+                                        aroundRange = 1,
+                                        maxCount = 0
+                                    }
+                                }
+                            },
+                            interpDecorators = {
+                                {
+                                    feature = "Decorator",
+                                    type = "AroundUnits",
+                                    vo = {
+                                        findType = "Enemy",
+                                        aroundRange = 1,
+                                        minCount = 1
                                     }
                                 }
                             },
@@ -254,7 +266,27 @@ this.AIConfig = {
                                     feature = "Decorator",
                                     type = "SeekTarget",
                                     vo = {
-                                        seekType = "NearestEnemy"
+                                        seekType = "FarthestEnemy"
+                                    }
+                                },
+                                {
+                                    feature = "Decorator",
+                                    type = "AroundUnits",
+                                    vo = {
+                                        findType = "Enemy",
+                                        aroundRange = 1,
+                                        minCount = 1
+                                    }
+                                }
+                            },
+                            interpDecorators = {
+                                {
+                                    feature = "Decorator",
+                                    type = "AroundUnits",
+                                    vo = {
+                                        findType = "Enemy",
+                                        aroundRange = 1,
+                                        maxCount = 0
                                     }
                                 }
                             },
