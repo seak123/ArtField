@@ -70,7 +70,7 @@ this.UnitConfig = {
         attack = 8,
         attackTime = 1.3,
         attackAnim = 0.6,
-        attackRange = 4,
+        attackRange = 6,
         rage = 50,
         isRange = 1,
         prefabPath = "Battle/Character/Modles/Bow/Prefab/Bow",
@@ -194,7 +194,6 @@ this.AIConfig = {
             }
         }
     },
-    --- 弓手AI
     [2] = {
         root = {
             feature = "Selector",
@@ -211,7 +210,7 @@ this.AIConfig = {
                             feature = "Decorator",
                             type = "SeekTarget",
                             vo = {
-                                seekType = "NearestEnemy"
+                                seekType = "FarthestEnemy"
                             }
                         }
                     },
@@ -232,65 +231,11 @@ this.AIConfig = {
                                     feature = "Decorator",
                                     type = "SeekTarget",
                                     vo = {
-                                        seekType = "NearestEnemy"
-                                    }
-                                },
-                                {
-                                    feature = "Decorator",
-                                    type = "AroundUnits",
-                                    vo = {
-                                        findType = "Enemy",
-                                        aroundRange = 1,
-                                        maxCount = 0
-                                    }
-                                }
-                            },
-                            interpDecorators = {
-                                {
-                                    feature = "Decorator",
-                                    type = "AroundUnits",
-                                    vo = {
-                                        findType = "Enemy",
-                                        aroundRange = 1,
-                                        minCount = 1
-                                    }
-                                }
-                            },
-                            vo = {}
-                        },
-                        {
-                            feature = "Action",
-                            type = "Attack",
-                            decorators = {
-                                {
-                                    feature = "Decorator",
-                                    type = "SeekTarget",
-                                    vo = {
                                         seekType = "FarthestEnemy"
                                     }
                                 },
-                                {
-                                    feature = "Decorator",
-                                    type = "AroundUnits",
-                                    vo = {
-                                        findType = "Enemy",
-                                        aroundRange = 1,
-                                        minCount = 1
-                                    }
-                                }
-                            },
-                            interpDecorators = {
-                                {
-                                    feature = "Decorator",
-                                    type = "AroundUnits",
-                                    vo = {
-                                        findType = "Enemy",
-                                        aroundRange = 1,
-                                        maxCount = 0
-                                    }
-                                }
-                            },
-                            vo = {}
+                                vo = {}
+                            }
                         },
                         {
                             feature = "Action",
@@ -328,6 +273,140 @@ this.AIConfig = {
             }
         }
     },
+    --- 弓手AI
+    -- [2] = {
+    --     root = {
+    --         feature = "Selector",
+    --         type = "Single",
+    --         vo = {
+    --             selectType = "Default"
+    --         },
+    --         actions = {
+    --             {
+    --                 feature = "Action",
+    --                 type = "Static",
+    --                 decorators = {
+    --                     {
+    --                         feature = "Decorator",
+    --                         type = "SeekTarget",
+    --                         vo = {
+    --                             seekType = "NearestEnemy"
+    --                         }
+    --                     }
+    --                 },
+    --                 vo = {}
+    --             },
+    --             {
+    --                 feature = "Selector",
+    --                 type = "Single",
+    --                 vo = {
+    --                     selectType = "Default"
+    --                 },
+    --                 actions = {
+    --                     {
+    --                         feature = "Action",
+    --                         type = "Attack",
+    --                         decorators = {
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "SeekTarget",
+    --                                 vo = {
+    --                                     seekType = "NearestEnemy"
+    --                                 }
+    --                             },
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "AroundUnits",
+    --                                 vo = {
+    --                                     findType = "Enemy",
+    --                                     aroundRange = 1,
+    --                                     maxCount = 0
+    --                                 }
+    --                             }
+    --                         },
+    --                         interpDecorators = {
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "AroundUnits",
+    --                                 vo = {
+    --                                     findType = "Enemy",
+    --                                     aroundRange = 1,
+    --                                     minCount = 1
+    --                                 }
+    --                             }
+    --                         },
+    --                         vo = {}
+    --                     },
+    --                     {
+    --                         feature = "Action",
+    --                         type = "Attack",
+    --                         decorators = {
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "SeekTarget",
+    --                                 vo = {
+    --                                     seekType = "FarthestEnemy"
+    --                                 }
+    --                             },
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "AroundUnits",
+    --                                 vo = {
+    --                                     findType = "Enemy",
+    --                                     aroundRange = 1,
+    --                                     minCount = 1
+    --                                 }
+    --                             }
+    --                         },
+    --                         interpDecorators = {
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "AroundUnits",
+    --                                 vo = {
+    --                                     findType = "Enemy",
+    --                                     aroundRange = 1,
+    --                                     maxCount = 0
+    --                                 }
+    --                             }
+    --                         },
+    --                         vo = {}
+    --                     },
+    --                     {
+    --                         feature = "Action",
+    --                         type = "Wait",
+    --                         decorators = {
+    --                             {
+    --                                 feature = "Decorator",
+    --                                 type = "SeekTarget",
+    --                                 vo = {
+    --                                     seekType = "FarthestEnemy"
+    --                                 }
+    --                             },
+    --                             vo = {}
+    --                         },
+    --                         vo = {
+    --                             waitType = "Enemy"
+    --                         }
+    --                     }
+    --                 }
+    --             },
+    --             {
+    --                 feature = "Action",
+    --                 type = "Move",
+    --                 decorators = {
+    --                     {
+    --                         feature = "Decorator",
+    --                         type = "SeekTarget",
+    --                         vo = {
+    --                             seekType = "FarthestEnemy"
+    --                         }
+    --                     }
+    --                 },
+    --                 vo = {}
+    --             }
+    --         }
+    --     }
+    -- },
     -- 刺客AI
     [3] = {
         root = {
