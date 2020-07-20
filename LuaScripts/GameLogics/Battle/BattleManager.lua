@@ -13,13 +13,15 @@ function BattleMng:ctor()
 end
 
 function BattleMng:StartBattle(battleVO)
-    Debug.Log("[BattleManger] StartBattle ",battleVO)
+    Debug.Log("[BattleManger] StartBattle ", battleVO)
     self.session = BattleSession.new(battleVO)
     self.session:Init()
 end
 
 function BattleMng:ExitBattle()
-    self.session:CleanUp()
+    if self.session ~= nil then
+        self.session:CleanUp()
+    end
     self.session = nil
 end
 
