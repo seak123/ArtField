@@ -16,6 +16,7 @@ function PreBattle:Enter()
     if not SystemConst.logicMode then
         CS.CameraManager.Instance:InitSceneCamera(BattleManager.session.sceneId)
     end
+
     self.next = FSM.SessionType.Begin
 end
 

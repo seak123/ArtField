@@ -5,6 +5,13 @@ local UIConst = require("GameLogics.Constant.UIConst")
 local setting = {
     Elements = {
         {
+            Name = "ChallengeBtn",
+            Type = CS.UnityEngine.UI.Button,
+            Handler = {
+                onClick = "OnChallenge"
+            }
+        },
+        {
             Name = "BattleBtn",
             Type = CS.UnityEngine.UI.Button,
             Handler = {
@@ -44,7 +51,17 @@ function MainUI:OnBattleBtn()
     CS.GameSceneManager.Instance:AddSceneLoadedOnceListener(
         function()
             MainUIManager.Hide()
-            BattleManager:StartBattle({id = 1, myHeros = {{1,2,3,4}, {1,2,3,4}}})
+            BattleManager:StartBattle({id = 1})
+        end
+    )
+    CS.SceneUtil.SwitchScene("DemoBattleScene", nil)
+end
+
+function MainUI:OnChallenge()
+    CS.GameSceneManager.Instance:AddSceneLoadedOnceListener(
+        function()
+            MainUIManager.Hide()
+            BattleManager:StartBattle({id = 1, level = 1})
         end
     )
     CS.SceneUtil.SwitchScene("DemoBattleScene", nil)

@@ -55,6 +55,12 @@ end
 ------------------------------------- unit functions ------------------------------
 function BattleField:CreateUnit(unitVO, camp)
     local camp = camp ~= nil and camp or 1
+
+    if camp == 1 and self.campInfo[1].num >= self.sess.unitLimit then
+        NoticeManager.Notice("单位已到上限")
+        return
+    end
+
     self.uid = self.uid + 1
     unitVO.camp = camp
     unitVO.uid = self.uid

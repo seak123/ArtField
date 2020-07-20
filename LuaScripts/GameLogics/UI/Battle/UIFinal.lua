@@ -36,9 +36,18 @@ function UIFinal:OnStart()
 end
 
 function UIFinal:OnClickButton()
+    local nextLevel = nil
+    if BattleManager.session.vo.level then
+        nextLevel = PlayerManager:GetCurLevel()
+    end
+
     BattleManager:ExitBattle()
-    BattleManager:StartBattle({id = 1, myHeros = {{1,2,3,4}, {1,2,3,4}}})
-    CS.WindowsUtil.RemoveWindow(self._target)
+    if nextLevel > ConfigManager:GetLevelNum() then
+        NoticeManager.Notice("已全部挑战")
+    else
+        BattleManager:StartBattle({id = 1, level = nextLevel})
+        CS.WindowsUtil.RemoveWindow(self._target)
+    end
 end
 
 function UIFinal:OnClickExit()

@@ -24,6 +24,7 @@ function ActionState:Update()
     if result >=0 then
         Debug.Warn("Battle is over, result is "..tostring(result))
         self.next = FSM.SessionType.Final
+        EventManager:Emit(EventConst.ON_BATTLE_RESULT,result)
     end
 end
 

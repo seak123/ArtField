@@ -74,7 +74,7 @@ this.UnitConfig = {
         rage = 50,
         isRange = 1,
         prefabPath = "Battle/Character/Modles/Bow/Prefab/Bow",
-        AI = 2,
+        AI = 4,
         projectileSpeed = 60, -- 弹道速度
         projectileASpeed = 50, -- 弹道加速度
         projectileId = 1 -- 弹道特效id
@@ -103,7 +103,7 @@ this.UnitConfig = {
         hp = 25,
         attack = 20,
         attackTime = 1.2, -- 攻击间隔
-        attackAnim = 0.05, -- 攻击前摇占比 
+        attackAnim = 0.05, -- 攻击前摇占比
         attackRange = 1, -- 攻击范围
         rage = 50, --怒气上限
         isRange = 0, --是否远程
@@ -329,6 +329,86 @@ this.AIConfig = {
                                     type = "SeekTarget",
                                     vo = {
                                         seekType = "NearestEnemy"
+                                    }
+                                },
+                                vo = {}
+                            },
+                            vo = {
+                                waitType = "Enemy"
+                            }
+                        }
+                    }
+                },
+                {
+                    feature = "Action",
+                    type = "Move",
+                    decorators = {
+                        {
+                            feature = "Decorator",
+                            type = "SeekTarget",
+                            vo = {
+                                seekType = "NearestEnemy"
+                            }
+                        }
+                    },
+                    vo = {}
+                }
+            }
+        }
+    },
+    --弓手新AI
+    [4] = {
+        root = {
+            feature = "Selector",
+            type = "Single",
+            vo = {
+                selectType = "Default"
+            },
+            actions = {
+                {
+                    feature = "Action",
+                    type = "Static",
+                    decorators = {
+                        {
+                            feature = "Decorator",
+                            type = "SeekTarget",
+                            vo = {
+                                seekType = "InRangeFarthestEnemy"
+                            }
+                        }
+                    },
+                    vo = {}
+                },
+                {
+                    feature = "Selector",
+                    type = "Single",
+                    vo = {
+                        selectType = "Default"
+                    },
+                    actions = {
+                        {
+                            feature = "Action",
+                            type = "Attack",
+                            decorators = {
+                                {
+                                    feature = "Decorator",
+                                    type = "SeekTarget",
+                                    vo = {
+                                        seekType = "InRangeFarthestEnemy"
+                                    }
+                                },
+                                vo = {}
+                            }
+                        },
+                        {
+                            feature = "Action",
+                            type = "Wait",
+                            decorators = {
+                                {
+                                    feature = "Decorator",
+                                    type = "SeekTarget",
+                                    vo = {
+                                        seekType = "InRangeFarthestEnemy"
                                     }
                                 },
                                 vo = {}

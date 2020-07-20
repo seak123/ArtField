@@ -21,16 +21,22 @@ end
 function BattleSession:Init()
     self.sceneId = self.vo.id
     self.curTime = os.time()
-    math.randomseed(self.curTime)
-    self.myHeros = self.vo.myHeros
+    math.randomseed(self.curTime) --, myHeros = {{1, 2, 3, 4}, {1, 2, 3, 4}}}
+    self.lvlCfg =
+        self.vo.level and ConfigManager:GetLevelConfig(self.vo.level) or
+        ConfigManager:GetParadeConfig()
+
+    self.unitLimit = self.lvlCfg.conditions.num or 999
     self.map =
         MapMng.new(
         self,
         {
-            width = 16,
-            height = 16
+            width = self.lvlCfg.map.width,
+            height = self.lvlCfg.map.height
         }
     )
+
+    self.myHeros = {self.lvlCfg.conditions.units or {}, self.lvlCfg.conditions.enemys or {}}
 
     self.field = BattleField.new(self)
     if not SystemConst.logicMode then
@@ -61,7 +67,7 @@ function BattleSession:Update(delta)
 end
 
 function BattleSession:CleanUp()
-    EventManager:Off(EventConst.ON_SCHEDULER_UPDATE, self.Update,self)
+    EventManager:Off(EventConst.ON_SCHEDULER_UPDATE, self.Update, self)
     if not SystemConst.logicMode then
         CS.BattleManager.Instance:LeaveBattle()
     end

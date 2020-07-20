@@ -38,4 +38,16 @@ function ConfigManager:GetAIConfig(id)
     return clone(CardConfig.AIConfig[id])
 end
 
+function ConfigManager:GetLevelNum()
+    return #require("GameLogics.Config.Battle.LevelConfig").levels
+end
+
+function ConfigManager:GetLevelConfig(id)
+    return require("GameLogics.Config.Battle.LevelConfig").levels[id]
+end
+
+function ConfigManager:GetParadeConfig()
+    return require("GameLogics.Config.Battle.LevelConfig").parade
+end
+
 return ConfigManager

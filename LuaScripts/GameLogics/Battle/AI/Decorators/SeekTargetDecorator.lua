@@ -4,15 +4,17 @@ local Condition = require("GameLogics.Battle.Field.Unit.Components.ConditionCont
 
 SeekTarget.SeekType = {
     NearestEnemy = "NearestEnemy",
-    FarthestEnemy = "FarthestEnemy"
+    FarthestEnemy = "FarthestEnemy",
+    InRangeFarthestEnemy = "InRangeFarthestEnemy"
 }
 
 SeekTarget.ExecuteMap = {
     [SeekTarget.SeekType.NearestEnemy] = "NearestEnemyFinder",
-    [SeekTarget.SeekType.FarthestEnemy] = "FarthestEnemyFinder"
+    [SeekTarget.SeekType.FarthestEnemy] = "FarthestEnemyFinder",
+    [SeekTarget.SeekType.InRangeFarthestEnemy] = "InRangeFarthestEnemyFinder",
 }
 
-function SeekTarget:ctor(parent,vo)
+function SeekTarget:ctor(parent, vo)
     self.parent = parent
     self.seekType = vo.seekType
 end
@@ -62,6 +64,40 @@ function SeekTarget:FarthestEnemyFinder()
     local farthstUnit = nil
     local searchFunc = function(unit)
         if unit.camp == 3 - master.camp then
+            if unit.condition:hasState(Condition.StateType.Steal) then
+                --有隐身状态则跳过
+                return
+            end
+            local dist = map:GetDist(master:GetPos(), unit:GetPos())
+            if dist > farthstDist then
+                farthstDist = dist
+                farthstUnit = unit
+            end
+        end
+    end
+    field:UnitForeach(searchFunc)
+    if farthstUnit ~= nil then
+        self.parent.targetPos = farthstUnit:GetPos()
+        return true
+    else
+        --cannot find target
+        return false
+    end
+end
+
+function SeekTarget:InRangeFarthestEnemyFinder()
+    local master = self.parent.tree.master
+    ---@type BattleField
+    local field = master.sess.field
+    ---@type MapManager
+    local map = master.sess.map
+    local farthstDist = 0
+    local farthstUnit = nil
+    local inRangeChecker = function(atk, vict)
+        return map:GetRangeDist(atk:GetPos(), vict:GetPos()) <= atk.properties:GetProperty("attackRange")
+    end
+    local searchFunc = function(unit)
+        if unit.camp == 3 - master.camp and inRangeChecker(master,unit) then
             if unit.condition:hasState(Condition.StateType.Steal) then
                 --有隐身状态则跳过
                 return
