@@ -52,7 +52,7 @@ this.levels = {
             {unitId = 1, x = 4, z = 5, camp = 2}
         },
         conditions = {
-            num = 3
+            num = 5
         }
     },
     [2] = {
@@ -62,14 +62,14 @@ this.levels = {
         },
         units = {
             {unitId = 1, x = 2, z = 4, camp = 2},
-            {unitId = 1, x = 3, z = 4, camp = 2},
-            {unitId = 1, x = 4, z = 4, camp = 2},
-            {unitId = 1, x = 5, z = 4, camp = 2},
-            {unitId = 1, x = 3, z = 5, camp = 2},
+            {unitId = 2, x = 3, z = 4, camp = 2},
+            {unitId = 3, x = 4, z = 4, camp = 2},
+            {unitId = 2, x = 5, z = 4, camp = 2},
+            {unitId = 3, x = 3, z = 5, camp = 2},
             {unitId = 1, x = 4, z = 5, camp = 2}
         },
         conditions = {
-            num = 3
+            num = 5
         }
     }
 }

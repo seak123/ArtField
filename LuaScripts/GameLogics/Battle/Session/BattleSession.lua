@@ -36,7 +36,7 @@ function BattleSession:Init()
         }
     )
 
-    self.myHeros = {self.lvlCfg.conditions.units or {}, self.lvlCfg.conditions.enemys or {}}
+    self.myHeros = {self.lvlCfg.conditions.units or {1,2,3,4}, self.lvlCfg.conditions.enemys or {}}
 
     self.field = BattleField.new(self)
     if not SystemConst.logicMode then
