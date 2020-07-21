@@ -28,6 +28,8 @@ function BeginState:Enter()
         BattleManager.session.field:CreateUnit(vo, units[i].camp)
     end
 
+    NoticeManager.Notice("本关卡可置放" .. self.sess.unitLimit .. "个单位")
+
     self.next = FSM.SessionType.Embattle
 end
 
