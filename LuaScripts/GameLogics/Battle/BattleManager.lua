@@ -25,4 +25,13 @@ function BattleMng:ExitBattle()
     self.session = nil
 end
 
+function BattleMng:JumpStartBattle(level)
+    if level <= 0 or level > ConfigManager:GetLevelNum() then
+        return NoticeManager.Notice("找不到关卡")
+    end
+    self:ExitBattle()
+    PlayerManager.level = level
+    self:StartBattle({id = 1, level = PlayerManager:GetCurLevel()})
+end
+
 return BattleMng

@@ -18,6 +18,13 @@ local setting = {
             }
         },
         {
+            Name = "JumpBtn",
+            Type = CS.UnityEngine.UI.Button,
+            Handler = {
+                onClick = "OnJump"
+            }
+        },
+        {
             Name = "Button/Text",
             Alias = "ButtonTxt",
             Type = CS.UnityEngine.UI.Text
@@ -70,6 +77,16 @@ function CardPanel:OnClickButton()
         self.btnCallback()
         CS.WindowsUtil.RemoveWindow(self._target)
     end
+end
+
+function CardPanel:OnJump()
+    MessageBoxManager.ShowMessageBox(
+        MessageBoxManager.BoxType.Input,
+        "请输入关卡(数字)",
+        function(value)
+            BattleManager:JumpStartBattle(value)
+        end
+    )
 end
 
 return CardPanel

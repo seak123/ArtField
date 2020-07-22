@@ -14,6 +14,7 @@ _G.PlayerManager = require("GameLogics.Player.PlayerManager").new()
 
 function Main()
     _G.NoticeManager = require("GameLogics.UI.NoticeSystem.NoticeManager")
+    _G.MessageBoxManager = require("GameLogics.UI.Message.MessageBoxManager")
     _G.Scheduler = require("GameCore.Schedule.Scheduler")
     _G.BattleManager = require("GameLogics.Battle.BattleManager")
     Scheduler.Init()
