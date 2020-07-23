@@ -20,7 +20,8 @@ MapMng.GridState = {
 }
 
 MapMng.Const = {
-    GridSize = 10 -- 格子边长(与Unity unit单位一致)
+    GridSize = 10, -- 格子边长(与Unity unit单位一致)
+    PrintLog = false
 }
 
 ---@param sess BattleSession
@@ -153,6 +154,8 @@ function MapMng:AStar(source, target, offset)
     local resultP
     while #queue > 0 do
         local curP = queue[1]
+        local sx = curP.x
+        local sz = curP.z
         -- if curP is near target-point then return this result
         if self:GetRangeDist(curP, target) <= offset then
             resultP = curP
@@ -178,19 +181,13 @@ function MapMng:AStar(source, target, offset)
                     end
                 )
                 if sameP == nil then
-                    table.insert(
-                        queue,
-                        {
-                            x = newP.x,
-                            z = newP.z,
-                            cost = curP.cost + matrix[i].cost,
-                            dist = distCal(newP),
-                            weight = matrix[i].cost + distCal(newP),
-                            parent = curP
-                        }
-                    )
+                    newP.cost = curP.cost + matrix[i].cost
+                    newP.dist = distCal(newP)
+                    newP.weight = newP.cost + distCal(newP)
+                    newP.parent = curP
+                    table.insert(queue, newP)
                 else
-                    if sameP.weight > matrix[i].cost + distCal(newP) then
+                    if sameP.weight > curP.cost + matrix[i].cost + distCal(newP) then
                         sameP.cost = curP.cost + matrix[i].cost
                         sameP.dist = distCal(newP)
                         sameP.weight = sameP.cost + sameP.dist
@@ -206,6 +203,19 @@ function MapMng:AStar(source, target, offset)
                 return a.weight < b.weight
             end
         )
+    end
+    if MapMng.Const.PrintLog then
+        local path = {}
+        local cur = resultP
+        while cur ~= nil do
+            table.insert(path, 0, cur)
+            cur = cur.parent
+        end
+        local str = tostring(uid) .. " path:"
+        for i = 1, #path do
+            str = str .. " [" .. path[i].x .. "," .. path[i].z .. "]=>"
+        end
+        Debug.Log(str)
     end
 
     if resultP == nil then
@@ -295,7 +305,7 @@ function MapMng:TryRemoveUnit(unit)
 
     -- clear view
     if not SystemConst.logicMode then
-        CS.MapManager.Instance:RemoveUnit(unit.uid,2)
+        CS.MapManager.Instance:RemoveUnit(unit.uid, 2)
     end
 end
 
@@ -303,7 +313,7 @@ function MapMng:UnitReqMove(unit, targetPos)
     local next = self:AStar(unit:GetPos(), targetPos)
     if next == nil then
         -- cannot move
-        return false,next
+        return false, next
     else
         self.moveTasks[unit.uid] = {
             goal = next,
@@ -313,7 +323,7 @@ function MapMng:UnitReqMove(unit, targetPos)
         local info = self:GetMapGridInfo(next.x, next.z)
         info.state = self.GridState.Order
         unit.moveCtrl:SwitchState("walking")
-        return true,next
+        return true, next
     end
 end
 
